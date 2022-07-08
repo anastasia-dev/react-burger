@@ -4,20 +4,39 @@ import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredie
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import style from "./App.module.css";
 
+const getDataInfo = 'https://norma.nomoreparties.space/api/ingredients';
+
 function App () {
-  return (
-    <div className={style.App}>
-      <AppHeader />
-        <main className={style.MainContainer}>
-            <section className={style.MainSection}>
-              <BurgerIngredients />
-            </section>
-            <section className={style.MainSection}>
-              <BurgerConstructor />
-            </section>
-        </main>
-    </div>
-  );
+    const [state, setState] = React.useState([]);
+
+    React.useEffect( () => {
+        fetch(getDataInfo)
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    setState(res.data)
+                } else {
+                    return Promise.reject(res.status);
+                }
+            })
+            .catch (e => {
+                alert(e);
+            })
+    }, [])
+
+      return (
+        <div className={style.App}>
+          <AppHeader />
+            <main className={style.MainContainer}>
+                <section className={style.MainSection}>
+                  <BurgerIngredients data={state} />
+                </section>
+                <section className={style.MainSection}>
+                  <BurgerConstructor data={state} />
+                </section>
+            </main>
+        </div>
+      );
 }
 
 export default App;

@@ -4,7 +4,7 @@ import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-com
 
 function Ingredient (props) {
     return (
-        <div className={props.class} key={props.index}>
+        <div className={props.class} key={props.index} onClick={props.funkClick}>
             <Counter count={Math.round(1 + Math.random() * (10 - 1))}/>
             <img alt={props.item.name} src={props.item.image_large}/>
             <section className={style.ingredientCaption}>

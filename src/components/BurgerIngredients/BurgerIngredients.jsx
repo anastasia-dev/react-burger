@@ -2,13 +2,22 @@ import React from "react";
 import Ingredient from "./Ingredient/Ingredient";
 import Tabs from "./Tabs/Tabs";
 import style from './BurgerIngredients.module.css'
-import data from '../../utils/data.json'
+/* import data from '../../utils/data.json' */
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 
-function BurgerIngredients () {
-    const [dataContent] = React.useState(data);
+function BurgerIngredients (props) {
+    const dataContent = props.data;
+    const [focusIngredient, setFocusIngredient] = React.useState(null)
+
     return (
         <div className={style.container}>
+            {focusIngredient != null && (
+                <Modal title="Детали ингредиента" close={() => setFocusIngredient(null)}>
+                    <IngredientDetails dataContent={focusIngredient} />
+                </Modal>)
+            }
             <section className={style.containerCaption}>
                 <p className="text text_type_main-large">Соберите бургер</p>
             </section>
@@ -20,22 +29,23 @@ function BurgerIngredients () {
                     <p className="text text_type_main-medium">Булки</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'bun' && <Ingredient class={style.ingredient} key={index} item={elem} />
+                    elem.type === 'bun' && <Ingredient class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
                 <section className={style.ingredientsName}>
                     <p className="text text_type_main-medium">Соусы</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={index} item={elem} />
+                    elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
                 <section className={style.ingredientsName}>
                     <p className="text text_type_main-medium">Начинки</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'main' && <Ingredient class={style.ingredient} key={index} item={elem} />
+                    elem.type === 'main' && <Ingredient class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
             </section>
         </div>
+
     );
 }
 
