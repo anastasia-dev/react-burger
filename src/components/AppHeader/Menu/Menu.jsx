@@ -1,7 +1,11 @@
 import React from "react";
 import style from "./Menu.module.css";
 import {BurgerIcon, ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 
+Menu.propTypes = {
+    text: PropTypes.string.isRequired
+};
 
 function Menu(props) {
     return (

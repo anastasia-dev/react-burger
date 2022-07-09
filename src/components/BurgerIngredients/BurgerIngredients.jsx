@@ -2,10 +2,15 @@ import React from "react";
 import Ingredient from "./Ingredient/Ingredient";
 import Tabs from "./Tabs/Tabs";
 import style from './BurgerIngredients.module.css'
-/* import data from '../../utils/data.json' */
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import PropTypes from "prop-types";
+import {IngridientPropType} from "../../types/Ingredients";
 
+BurgerConstructor.propTypes = {
+    data: PropTypes.arrayOf(IngridientPropType.isRequired).isRequired
+};
 
 function BurgerIngredients (props) {
     const dataContent = props.data;

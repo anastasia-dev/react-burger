@@ -1,5 +1,11 @@
 import React from "react";
 import style from './IngredientDetails.module.css'
+import {IngridientPropType} from "../../types/Ingredients";
+
+
+IngredientDetails.propTypes = {
+    dataContent: IngridientPropType.isRequired
+};
 
 function IngredientDetails (props) {
     return (props.dataContent &&
