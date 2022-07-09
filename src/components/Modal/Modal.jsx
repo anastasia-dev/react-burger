@@ -17,7 +17,7 @@ function Modal (props) {
         if (e.keyCode == 27) {
             props.close();
         }
-    },[]);
+    },[props.close]);
 
     React.useEffect(() => {
         document.addEventListener("keydown", pressEsc);
@@ -25,7 +25,7 @@ function Modal (props) {
         return () => {
             document.removeEventListener("keydown", pressEsc);
         };
-    },[]);
+    },[props.close]);
 
     return modalRoot && ReactDOM.createPortal(
         <>
