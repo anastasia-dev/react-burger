@@ -12,7 +12,7 @@ Ingredient.propTypes = {
 
 function Ingredient (props) {
     return (
-        <div className={props.class} key={props.index} onClick={props.funkClick}>
+        <div className={props.class} key={props._id} onClick={props.funkClick}>
             <Counter count={Math.round(1 + Math.random() * (10 - 1))}/>
             <img alt={props.item.name} src={props.item.image_large}/>
             <section className={style.ingredientCaption}>

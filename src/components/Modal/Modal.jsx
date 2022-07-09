@@ -14,7 +14,7 @@ const modalRoot = document.getElementById("modal-root");
 
 function Modal (props) {
     const pressEsc = React.useCallback((e) => {
-        if (e.keyCode == 27) {
+        if (e.key === 'Escape') {
             props.close();
         }
     },[props.close]);

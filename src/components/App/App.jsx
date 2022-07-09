@@ -11,12 +11,17 @@ function App () {
 
     React.useEffect( () => {
         fetch(getDataInfo)
-            .then(r => r.json())
+            .then(r => {
+                if (r.ok) {
+                    return r.json();
+                }
+                return Promise.reject(`Произошла ошибка ${r.status}`);
+            })
             .then(res => {
                 if (res.success) {
                     setState(res.data)
                 } else {
-                    return Promise.reject(res.status);
+                    return Promise.reject(`Произошла ошибка ${res.status}`);
                 }
             })
             .catch (e => {

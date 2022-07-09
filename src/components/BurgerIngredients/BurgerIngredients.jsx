@@ -34,19 +34,19 @@ function BurgerIngredients (props) {
                     <p className="text text_type_main-medium">Булки</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'bun' && <Ingredient class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
+                    elem.type === 'bun' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
                 <section className={style.ingredientsName}>
                     <p className="text text_type_main-medium">Соусы</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
+                    elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={elem._id} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
                 <section className={style.ingredientsName}>
                     <p className="text text_type_main-medium">Начинки</p>
                 </section>
                 {dataContent.map((elem, index) => (
-                    elem.type === 'main' && <Ingredient class={style.ingredient} key={index} item={elem} funkClick={() => setFocusIngredient(elem)} />
+                    elem.type === 'main' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
             </section>
         </div>
