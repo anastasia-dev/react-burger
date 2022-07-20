@@ -12,35 +12,36 @@ import {finalSum} from "./BurgerConstructorReducer";
 const getOrdersInfo = 'https://norma.nomoreparties.space/api/orders';
 
 BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(IngridientPropType.isRequired).isRequired
+    ingredientsData: PropTypes.arrayOf(IngridientPropType.isRequired)
 };
 
 
 
 function BurgerConstructor () {
     const [orderSum, orderSumDispatch] = React.useReducer(BurgerConstructorReducer, 0);
-    const newData = React.useContext(BurgerConstructorContext);
-    const [fixed] = React.useState(0);
+    const ingredientsData = React.useContext(BurgerConstructorContext);
+    const bun = React.useMemo(() => ingredientsData.find(el => el.type === "bun"), [ingredientsData]);
+
     const [editableElement] = React.useState([2,3,6,4,5]);
     const [openModal, setOpenModal] = React.useState(false);
     const [orderNumber, setOrderNumber] = React.useState(0)
 
 
     const getSum = () => {
-        if(newData?.length) {
+        if(ingredientsData?.length) {
             return editableElement.reduce(function (prevSum, currentSum) {
-                return prevSum + newData[currentSum].price;
-            }, 0) + 2 * newData[fixed].price;
+                return prevSum + ingredientsData[currentSum].price;
+            }, 0) + 2 * bun.price;
         }
     }
 
-    React.useEffect(()=> orderSumDispatch({type:finalSum, orderSum: getSum()}),[editableElement, fixed, newData]);
+    React.useEffect(()=> orderSumDispatch({type:finalSum, orderSum: getSum()}),[editableElement, bun, ingredientsData]);
 
     const getNum = () => {
         let ingredientIds = { ingredients: [] };
-        ingredientIds.ingredients.push(newData[fixed]._id);
-        ingredientIds.ingredients.push(newData[fixed]._id);
-        editableElement.map((item) => ingredientIds.ingredients.push(newData[item]._id));
+        ingredientIds.ingredients.push(bun._id);
+        ingredientIds.ingredients.push(bun._id);
+        editableElement.map((item) => ingredientIds.ingredients.push(ingredientsData[item]._id));
 
         fetch(getOrdersInfo,{
             method: 'POST',
@@ -74,15 +75,15 @@ function BurgerConstructor () {
         setOpenModal(false);
         setOrderNumber(0);
     }
-    return (newData?.length &&
-        <div className={style.mainSection}>
+    return (ingredientsData?.length &&
+        <section className={style.mainSection}>
             {orderNumber !=0 && openModal && (
                 <Modal close={modalClose}>
                     <OrderDetails number={orderNumber} />
                 </Modal>
             )}
             <section className={style.fixedItem}>
-                {newData.map((item, index) => (
+                {ingredientsData.map((item, index) => (
                     item?.type === 'bun' && index == 0 &&
                     <ConstructorElement
                         type="top"
@@ -96,19 +97,19 @@ function BurgerConstructor () {
             </section>
             <section className={style.editableSection}>
                 {editableElement.map((item,index)=>(
-                    <section className={style.editableItem} key={newData[item]._id}>
+                    <section className={style.editableItem} key={ingredientsData[item]._id}>
                         <section><DragIcon type="primary" /></section>
                         <ConstructorElement
-                            text={newData[item].name}
-                            price={newData[item].price}
-                            thumbnail={newData[item].image_mobile}
+                            text={ingredientsData[item].name}
+                            price={ingredientsData[item].price}
+                            thumbnail={ingredientsData[item].image_mobile}
                         />
 
                     </section>
                 ))}
             </section>
             <section className={style.fixedItem}>
-                {newData.map((item, index) => (
+                {ingredientsData.map((item, index) => (
                     item?.type === 'bun' && index == 0 && <ConstructorElement
                         type="bottom"
                         key={item._id}
@@ -126,7 +127,7 @@ function BurgerConstructor () {
                 </section>
                 <Button type="primary" size="medium" onClick={modalOpen}>Оформить заказ</Button>
             </section>
-        </div>
+        </section>
     );
 }
 

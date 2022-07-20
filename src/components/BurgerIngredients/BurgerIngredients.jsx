@@ -4,20 +4,20 @@ import Tabs from "./Tabs/Tabs";
 import style from './BurgerIngredients.module.css'
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import PropTypes from "prop-types";
 import {IngridientPropType} from "../../types/Ingredients";
+import {BurgerIngredientsContext} from "../../services/BurgerIngredientsContext";
 
-BurgerConstructor.propTypes = {
-    data: PropTypes.arrayOf(IngridientPropType.isRequired).isRequired
+BurgerIngredients.propTypes = {
+    dataContent: PropTypes.arrayOf(IngridientPropType.isRequired)
 };
 
-function BurgerIngredients (props) {
-    const dataContent = props.data;
+function BurgerIngredients () {
+    const dataContent = React.useContext(BurgerIngredientsContext);
     const [focusIngredient, setFocusIngredient] = React.useState(null)
 
     return (
-        <div className={style.container}>
+        <section className={style.container}>
             {focusIngredient != null && (
                 <Modal title="Детали ингредиента" close={() => setFocusIngredient(null)}>
                     <IngredientDetails dataContent={focusIngredient} />
@@ -49,7 +49,7 @@ function BurgerIngredients (props) {
                     elem.type === 'main' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => setFocusIngredient(elem)} />
                 ))}
             </section>
-        </div>
+        </section>
 
     );
 }

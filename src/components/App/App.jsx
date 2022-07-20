@@ -4,11 +4,12 @@ import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredie
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import style from "./App.module.css";
 import {BurgerConstructorContext} from "../../services/BurgerConstructorContext";
+import {BurgerIngredientsContext} from "../../services/BurgerIngredientsContext"
 
 const getDataInfo = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App () {
-    const [state, setState] = React.useState([]);
+    const [ingredients, setIngredients] = React.useState([]);
 
     React.useEffect( () => {
         fetch(getDataInfo)
@@ -20,7 +21,7 @@ function App () {
             })
             .then(res => {
                 if (res.success) {
-                    setState(res.data)
+                    setIngredients(res.data)
                 } else {
                     return Promise.reject(`Произошла ошибка ${res.status}`);
                 }
@@ -34,14 +35,12 @@ function App () {
         <div className={style.App}>
           <AppHeader />
             <main className={style.MainContainer}>
-                <section className={style.MainSection}>
-                  <BurgerIngredients data={state} />
-                </section>
-                <section className={style.MainSection}>
-                    <BurgerConstructorContext.Provider value={state}>
-                        <BurgerConstructor data={state} />
-                    </BurgerConstructorContext.Provider>
-                </section>
+                <BurgerIngredientsContext.Provider value={ingredients}>
+                    <BurgerIngredients />
+                </BurgerIngredientsContext.Provider>
+                <BurgerConstructorContext.Provider value={ingredients}>
+                    <BurgerConstructor />
+                </BurgerConstructorContext.Provider>
             </main>
         </div>
       );

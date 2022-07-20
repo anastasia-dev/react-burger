@@ -8,12 +8,6 @@
   margin: auto auto 100px auto;
 }
 
-.MainSection {
-  display: flex;
-  justify-content: space-between;
-  width: 600px;
-}
-
 .App {
   text-align: center;
 }
