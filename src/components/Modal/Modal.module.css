@@ -1,0 +1,22 @@
+.modalPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border-radius: 35px;
+    background-color: rgb(25, 25, 33);
+    margin: -300px 0 0 -300px;
+    width: 600px;
+    max-width: 600px;
+    height: auto;
+    z-index: 5;
+}
+
+.ElementInfo {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 40px 0 40px;
+}
+
+.ElementInfo svg {
+    cursor: pointer;
+}
