@@ -10,8 +10,10 @@ Menu.propTypes = {
 function Menu(props) {
     return (
         <section className={style.menu}>
-            {props.text === "Конструктор" ? <BurgerIcon type="primary"/> : <ListIcon type="secondary"/>}
-            <p className="text text_type_main-default">{props.text}</p>
+            <a href="#">
+                {props.text === "Конструктор" ? <BurgerIcon type="primary"/> : <ListIcon type="secondary"/>}
+                <p className="text text_type_main-default">{props.text}</p>
+            </a>
         </section>
     );
 }
