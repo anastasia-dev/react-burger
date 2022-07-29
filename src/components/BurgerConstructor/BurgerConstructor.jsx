@@ -6,10 +6,11 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import {IngridientPropType} from "../../types/Ingredients";
 import {BurgerConstructorContext} from "../../services/BurgerConstructorContext";
-import BurgerConstructorReducer from "./BurgerConstructorReducer";
-import {finalSum} from "./BurgerConstructorReducer";
+import BurgerConstructorReducer from "../../services/reducers/BurgerConstructorReducer";
+import {finalSum} from "../../services/reducers/BurgerConstructorReducer";
+import {URL_ORDERS} from "../../utils/constants";
 
-const getOrdersInfo = 'https://norma.nomoreparties.space/api/orders';
+const getOrdersInfo = URL_ORDERS;
 
 BurgerConstructor.propTypes = {
     ingredientsData: PropTypes.arrayOf(IngridientPropType.isRequired)

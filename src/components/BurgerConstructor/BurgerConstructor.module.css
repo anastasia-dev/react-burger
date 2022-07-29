@@ -1,6 +1,7 @@
 .mainSection {
     display: flex;
-    width: 50%;
+    width: 600px;
+    flex-grow: 1;
     flex-direction: column;
     margin-top: 100px;
     row-gap: 16px;
