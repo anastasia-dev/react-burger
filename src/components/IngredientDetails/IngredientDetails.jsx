@@ -10,7 +10,8 @@ IngredientDetails.propTypes = {
 
 function IngredientDetails () {
     const data = useSelector(state => state.detailsItem.item);
-    return (data?.length &&
+
+    return (data &&
         <div className={style.ingredientBox}>
             <header>
                 <section className={style.image}>

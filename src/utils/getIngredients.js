@@ -1,7 +1,4 @@
-import {
-    SHOW_INGREDIENTS,
-    SHOW_INGREDIENTS_ERROR
-} from "../services/actions/ingredients";
+import {SHOW_INGREDIENTS,  SHOW_INGREDIENTS_ERROR} from "../services/actions/ingredients";
 import {checkApiResponse} from "./apiCheck";
 import {URL_INGREDIENTS} from "./constants";
 
@@ -14,7 +11,7 @@ export function getIngredients () {
             .then(res => {
                 dispatch({
                     type: SHOW_INGREDIENTS,
-                    data: res.data
+                    data: res.data.map(e => { return  { ...e, count: 0} })
                 });
             })
             .catch (e => {

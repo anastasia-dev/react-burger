@@ -9,6 +9,8 @@ import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
 import {HIDE_INGREDIENT_DETAILS, SHOW_INGREDIENT_DETAILS} from "../../services/actions/ingredientDetails";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
+import {ADD_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
+import {INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 
 
 
@@ -18,6 +20,7 @@ BurgerIngredients.propTypes = {
 
 
 function BurgerIngredients () {
+
     const ingredients  = useSelector(state => state.ingredients);
     const detailsItem  = useSelector(state => state.detailsItem.item);
     const dispatch = useDispatch();

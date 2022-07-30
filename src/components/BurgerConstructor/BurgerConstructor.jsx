@@ -1,132 +1,163 @@
 import React  from "react";
 import style from './BurgerConstructor.module.css'
-import {CurrencyIcon, Button, ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {CurrencyIcon, Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import {IngridientPropType} from "../../types/Ingredients";
-import {BurgerConstructorContext} from "../../services/BurgerConstructorContext";
-import BurgerConstructorReducer from "../../services/reducers/BurgerConstructorReducer";
-import {finalSum} from "../../services/reducers/BurgerConstructorReducer";
-import {URL_ORDERS} from "../../utils/constants";
-
-const getOrdersInfo = URL_ORDERS;
+import {useDispatch, useSelector} from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import {getOrderNumber} from "../../utils/getOrderNumber";
+import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
+import {HIDE_ORDER_MODAL} from "../../services/actions/orderModal";
+import {CLEAR_ORDER_NUMBER} from "../../services/actions/orderNumber";
+import {CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
+import {useDrop} from 'react-dnd';
+import EditableItem from "./EditableItem/EditableItem";
 
 BurgerConstructor.propTypes = {
     ingredientsData: PropTypes.arrayOf(IngridientPropType.isRequired)
 };
 
 
-
 function BurgerConstructor () {
-    const [orderSum, orderSumDispatch] = React.useReducer(BurgerConstructorReducer, 0);
-    const ingredientsData = React.useContext(BurgerConstructorContext);
-    const bun = React.useMemo(() => ingredientsData.find(el => el.type === "bun"), [ingredientsData]);
+    const elements  = useSelector(state => state.ingredients);
+    const editableElements = useSelector(state => state.editableIngredients);
+    const orderNumberLoad = useSelector(state => state.orderNumber.getOrderNumberLoad);
 
-    const [editableElement] = React.useState([2,3,6,4,5]);
-    const [openModal, setOpenModal] = React.useState(false);
-    const [orderNumber, setOrderNumber] = React.useState(0)
-
+    const dispatch = useDispatch();
 
     const getSum = () => {
-        if(ingredientsData?.length) {
-            return editableElement.reduce(function (prevSum, currentSum) {
-                return prevSum + ingredientsData[currentSum].price;
-            }, 0) + 2 * bun.price;
+        let sum = 0;
+        if(editableElements.ingredientList) {
+            sum += editableElements.ingredientList.reduce(function (prevSum, elem) {
+                return prevSum + elem.price;
+            }, 0);
         }
+        if (editableElements.bun)
+            sum += 2 * editableElements.bun.price;
+        return sum;
     }
 
-    React.useEffect(()=> orderSumDispatch({type:finalSum, orderSum: getSum()}),[editableElement, bun, ingredientsData]);
+    const showOrderModal = () => {
+        let order = [];
+        if (editableElements.bun) {
+            order.push(editableElements.bun._id);
+            order.push(editableElements.bun._id);
+        } else {
+            alert("Для оформления заказа добавьте в заказ булку");
+            return;
+        }
+        editableElements.ingredientList.map(element => element._id).forEach(item => order.push(item));
+        dispatch(getOrderNumber({ ingredients: order }));
+    }
 
-    const getNum = () => {
-        let ingredientIds = { ingredients: [] };
-        ingredientIds.ingredients.push(bun._id);
-        ingredientIds.ingredients.push(bun._id);
-        editableElement.map((item) => ingredientIds.ingredients.push(ingredientsData[item]._id));
+    const hideOrderModal = () => {
+        dispatch({
+            type: CLEAR_ORDER_NUMBER
+        });
+        dispatch({
+            type: CLEAR_ITEM_COUNT
+        });
+        dispatch({
+            type: CLEAR_CONSTRUCTOR_DATA
+        });
+        dispatch({
+            type: HIDE_ORDER_MODAL
+        });
 
-        fetch(getOrdersInfo,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ingredientIds)
-        })
-        .then(res =>{
-            if (res.ok) {
-                return res.json();
+    }
+    const deleteItem = (itemUid) => {
+        dispatch({
+            type: DECREASE_ITEM_COUNT,
+            itemId: editableElements.ingredientList.find(ingredient => ingredient.Uid == itemUid)._id
+        });
+        dispatch({
+            type: DELETE_INGREDIENT,
+            key: itemUid
+        });
+    }
+
+    const [, dropIngredient] = useDrop({
+        accept: "draggableIngredient",
+        drop(itemId) {
+            const element = elements.dataContent.find(e => e._id == itemId.id);
+            if(element.type === 'bun') {
+                if (editableElements.bun)
+                    dispatch({
+                        type: DECREASE_ITEM_COUNT,
+                        itemId: editableElements.bun._id
+                    });
+                dispatch({
+                    type: SET_BUN,
+                    bun: element
+                });
+            } else {
+                dispatch({
+                    type: ADD_INGREDIENT,
+                    item: element
+                });
             }
-            else {
-                return Promise.reject(`Произошла ошибка ${res?.status}`);
-            }
+            dispatch({
+                type: INCREASE_ITEM_COUNT,
+                itemId: element._id
+            });
+        },
+    });
 
-        })
-        .then(newData => {
-            setOrderNumber(newData.order.number);
-            setOpenModal(true);
-        })
-        .catch (e => {
-            alert(e);
-        })
-    }
-    const modalOpen = () => {
-        getNum();
-    }
+    const orderSum = React.useMemo(() => getSum(), [editableElements]);
 
-    const modalClose = () => {
-        setOpenModal(false);
-        setOrderNumber(0);
-    }
-    return (ingredientsData?.length &&
-        <section className={style.mainSection}>
-            {orderNumber !=0 && openModal && (
-                <Modal close={modalClose}>
-                    <OrderDetails number={orderNumber} />
+    return (!elements.ingredientsLoading &&
+        <section ref={dropIngredient} className={style.mainSection}>
+            {!orderNumberLoad && (
+                <Modal close={hideOrderModal}>
+                    <OrderDetails />
                 </Modal>
             )}
             <section className={style.fixedItem}>
-                {ingredientsData.map((item, index) => (
-                    item?.type === 'bun' && index == 0 &&
-                    <ConstructorElement
-                        type="top"
-                        key={item._id}
-                        text={item.name + " (верх)"}
-                        price={item.price}
-                        thumbnail={item.image_mobile}
-                        isLocked={true}
-                    />
-                ))}
+                {!editableElements.bun && (
+                    <section className={style.defaultConstructorText}>
+                        <p className="text text_type_main-large">
+                            Для сборки бургера перетащите сюда ингридиенты
+                        </p>
+                    </section>
+                )}
+                {
+                    editableElements.bun && (
+                        <ConstructorElement
+                            type="top"
+                            key={uuidv4()}
+                            text={editableElements.bun.name + " (верх)"}
+                            price={editableElements.bun.price}
+                            thumbnail={editableElements.bun.image_mobile}
+                            isLocked={true}
+                        />
+                    )
+                }
             </section>
             <section className={style.editableSection}>
-                {editableElement.map((item,index)=>(
-                    <section className={style.editableItem} key={ingredientsData[item]._id}>
-                        <section><DragIcon type="primary" /></section>
-                        <ConstructorElement
-                            text={ingredientsData[item].name}
-                            price={ingredientsData[item].price}
-                            thumbnail={ingredientsData[item].image_mobile}
-                        />
-
-                    </section>
+                {editableElements.ingredientList.map((item,index)=>(
+                    <EditableItem key={item.Uid} item={item} deleteItem={deleteItem}/>
                 ))}
             </section>
             <section className={style.fixedItem}>
-                {ingredientsData.map((item, index) => (
-                    item?.type === 'bun' && index == 0 && <ConstructorElement
-                        type="bottom"
-                        key={item._id}
-                        text={item.name + " (низ)"}
-                        price={item.price}
-                        thumbnail={item.image_mobile}
-                        isLocked={true}
-                    />
-                ))}
+                {editableElements.bun && (
+                <ConstructorElement
+                    type="bottom"
+                    key={uuidv4()}
+                    text={editableElements.bun.name + " (низ)"}
+                    price={editableElements.bun.price}
+                    thumbnail={editableElements.bun.image_mobile}
+                    isLocked={true}
+                />
+                )}
             </section>
             <section className={style.orderInfo}>
                 <section className={style.orderSum}>
                     <p className="text text_type_digits-medium">{orderSum}</p>
                     <CurrencyIcon type="primary" />
                 </section>
-                <Button type="primary" size="medium" onClick={modalOpen}>Оформить заказ</Button>
+                <Button type="primary" size="medium" onClick={showOrderModal}>Оформить заказ</Button>
             </section>
         </section>
     );

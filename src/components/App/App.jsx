@@ -23,7 +23,7 @@ function App () {
             <DndProvider  backend={HTML5Backend}>
                 <main className={style.MainContainer}>
                     <BurgerIngredients />
-                   {/* <BurgerConstructor />*/}
+                    <BurgerConstructor />
                 </main>
             </DndProvider>
         </div>

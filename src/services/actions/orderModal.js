@@ -1,0 +1,2 @@
+export const HIDE_ORDER_MODAL = 'HIDE_ORDER_MODAL';
+export const SHOW_ORDER_MODAL = 'SHOW_ORDER_MODAL';
