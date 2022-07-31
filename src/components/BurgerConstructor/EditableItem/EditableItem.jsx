@@ -9,7 +9,7 @@ import {SWAP_INGREDIENTS} from "../../../services/actions/constructor";
 
 const EditableItem = (props) => {
     const ingredientList = useSelector(state => state.editableIngredients.ingredientList);
-    const itemUid = props.item.Uid;
+    const itemUid = props.item.uid;
     const ref = useRef(null);
     const dispatch = useDispatch();
 
@@ -27,8 +27,8 @@ const EditableItem = (props) => {
             if (!item.ref.current) {
                 return
             }
-            const dragIndex = ingredientList.findIndex(a => a.Uid == item.itemUid);
-            const hoverIndex = ingredientList.findIndex(a => a.Uid == itemUid);
+            const dragIndex = ingredientList.findIndex(a => a.uid == item.itemUid);
+            const hoverIndex = ingredientList.findIndex(a => a.uid == itemUid);
             if (dragIndex === hoverIndex) {
                 return
             }

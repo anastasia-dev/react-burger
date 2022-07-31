@@ -6,10 +6,8 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import {getOrderNumber} from "../../utils/getOrderNumber";
 import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
-import {HIDE_ORDER_MODAL} from "../../services/actions/orderModal";
 import {CLEAR_ORDER_NUMBER} from "../../services/actions/orderNumber";
 import {CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 import {useDrop} from 'react-dnd';
@@ -23,7 +21,7 @@ BurgerConstructor.propTypes = {
 function BurgerConstructor () {
     const elements  = useSelector(state => state.ingredients);
     const editableElements = useSelector(state => state.editableIngredients);
-    const orderNumberLoad = useSelector(state => state.orderNumber.getOrderNumberLoad);
+    const orderNumberLoading = useSelector(state => state.orderNumber.orderNumberLoading);
 
     const dispatch = useDispatch();
 
@@ -62,15 +60,11 @@ function BurgerConstructor () {
         dispatch({
             type: CLEAR_CONSTRUCTOR_DATA
         });
-        dispatch({
-            type: HIDE_ORDER_MODAL
-        });
-
     }
     const deleteItem = (itemUid) => {
         dispatch({
             type: DECREASE_ITEM_COUNT,
-            itemId: editableElements.ingredientList.find(ingredient => ingredient.Uid == itemUid)._id
+            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid == itemUid)._id
         });
         dispatch({
             type: DELETE_INGREDIENT,
@@ -109,7 +103,7 @@ function BurgerConstructor () {
 
     return (!elements.ingredientsLoading &&
         <section ref={dropIngredient} className={style.mainSection}>
-            {!orderNumberLoad && (
+            {!orderNumberLoading && (
                 <Modal close={hideOrderModal}>
                     <OrderDetails />
                 </Modal>
@@ -126,7 +120,7 @@ function BurgerConstructor () {
                     editableElements.bun && (
                         <ConstructorElement
                             type="top"
-                            key={uuidv4()}
+                            key={editableElements.bun._id}
                             text={editableElements.bun.name + " (верх)"}
                             price={editableElements.bun.price}
                             thumbnail={editableElements.bun.image_mobile}
@@ -137,14 +131,14 @@ function BurgerConstructor () {
             </section>
             <section className={style.editableSection}>
                 {editableElements.ingredientList.map((item,index)=>(
-                    <EditableItem key={item.Uid} item={item} deleteItem={deleteItem}/>
+                    <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
                 ))}
             </section>
             <section className={style.fixedItem}>
                 {editableElements.bun && (
                 <ConstructorElement
                     type="bottom"
-                    key={uuidv4()}
+                    key={editableElements.bun._id}
                     text={editableElements.bun.name + " (низ)"}
                     price={editableElements.bun.price}
                     thumbnail={editableElements.bun.image_mobile}

@@ -9,8 +9,6 @@ import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
 import {HIDE_INGREDIENT_DETAILS, SHOW_INGREDIENT_DETAILS} from "../../services/actions/ingredientDetails";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
-import {ADD_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
-import {INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 
 
 
@@ -20,9 +18,9 @@ BurgerIngredients.propTypes = {
 
 
 function BurgerIngredients () {
-
     const ingredients  = useSelector(state => state.ingredients);
     const detailsItem  = useSelector(state => state.detailsItem.item);
+    const tabs  = useSelector(state => state.activeTab);
     const dispatch = useDispatch();
     const ref = React.useRef(null);
     const refBuns = React.useRef(null);
@@ -50,20 +48,36 @@ function BurgerIngredients () {
             { dist: Math.abs(refMains.current.getBoundingClientRect().y - height), tab: "three" },
         ]
         arrayCoords.sort((prev, next) => prev.dist - next.dist );
-        dispatch({
-            type: SET_ACTIVE_TAB,
-            activeTab: arrayCoords[0].tab
-        });
+        if (tabs.activeTab !== arrayCoords[0].tab)
+            dispatch({
+                type: SET_ACTIVE_TAB,
+                activeTab: arrayCoords[0].tab
+            });
     }
 
 
-    return (
-        !ingredients.ingredientsLoading &&
-        <section className={style.container}>
+    let content;
+
+    if (ingredients.ingredientsFailed)
+        content =
+            (<section className={style.container}>
+                <section className={style.containerCaption}>
+                    <p className="text text_type_main-large">Не удалось получить данные ингредиентов</p>
+                </section>
+            </section>);
+    else if (ingredients.ingredientsLoading)
+        content = (<section className={style.container}>
+            <section className={style.containerCaption}>
+                <p className="text text_type_main-large">Данные загружаются...</p>
+            </section>
+        </section>);
+    else
+        content =
+        (<section className={style.container}>
             {
                 detailsItem &&
                 (<Modal title="Детали ингредиента" close={closeItemDetails}>
-                        <IngredientDetails dataContent={detailsItem} />
+                    <IngredientDetails dataContent={detailsItem} />
                 </Modal>)
             }
             <section className={style.containerCaption}>
@@ -92,8 +106,9 @@ function BurgerIngredients () {
                     elem.type === 'main' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
             </section>
-        </section>
-    );
+        </section>);
+
+    return content;
 }
 
 export default BurgerIngredients;

@@ -15,7 +15,7 @@ const constructorInitialState = {
 export const burgerConstructorReducer = (state = constructorInitialState, action) => {
     switch (action.type) {
         case ADD_INGREDIENT: {
-            state.ingredientList.push({ ...action.item, Uid: uuidv4() });
+            state.ingredientList.push({ ...action.item, uid: uuidv4() });
             return {
                 ...state
             };
@@ -23,7 +23,7 @@ export const burgerConstructorReducer = (state = constructorInitialState, action
         case DELETE_INGREDIENT: {
             return {
                 ...state,
-                ingredientList: state.ingredientList.filter((e, index) => e.Uid != action.key)
+                ingredientList: state.ingredientList.filter((e, index) => e.uid != action.key)
             };
         }
         case SET_BUN: {

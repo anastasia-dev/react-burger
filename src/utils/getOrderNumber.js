@@ -1,4 +1,8 @@
-import {SHOW_ORDER_NUMBER, SHOW_ORDER_NUMBER_FAILED} from "../services/actions/orderNumber";
+import {
+    SHOW_ORDER_NUMBER_SUCCESS,
+    SHOW_ORDER_NUMBER_ERROR,
+    SHOW_ORDER_NUMBER_REQUEST
+} from "../services/actions/orderNumber";
 import {URL_ORDERS} from "./constants";
 import {checkApiResponse} from "./apiCheck";
 
@@ -7,6 +11,9 @@ const requestNumber = URL_ORDERS;
 
 export function getOrderNumber(post) {
     return function (dispatch) {
+        dispatch({
+            type: SHOW_ORDER_NUMBER_REQUEST,
+        });
         fetch(requestNumber, {
             method: 'POST',
             headers: {
@@ -16,15 +23,15 @@ export function getOrderNumber(post) {
         }).then(checkApiResponse)
             .then(res => {
                     dispatch({
-                        type: SHOW_ORDER_NUMBER,
+                        type: SHOW_ORDER_NUMBER_SUCCESS,
                         data: res.order.number
-                    })
+                    });
             }).catch((e) => {
                 alert(e);
                 dispatch({
-                    type: SHOW_ORDER_NUMBER_FAILED,
+                    type: SHOW_ORDER_NUMBER_ERROR,
                     data: `Произошла ошибка ${e}`
-                })
+                });
         })
     }
 }
