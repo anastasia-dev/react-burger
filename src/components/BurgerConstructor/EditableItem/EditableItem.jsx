@@ -27,8 +27,8 @@ const EditableItem = (props) => {
             if (!item.ref.current) {
                 return
             }
-            const dragIndex = ingredientList.findIndex(a => a.uid == item.itemUid);
-            const hoverIndex = ingredientList.findIndex(a => a.uid == itemUid);
+            const dragIndex = ingredientList.findIndex(a => a.uid === item.itemUid);
+            const hoverIndex = ingredientList.findIndex(a => a.uid === itemUid);
             if (dragIndex === hoverIndex) {
                 return
             }

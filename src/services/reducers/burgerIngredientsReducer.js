@@ -41,8 +41,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             };
         }
         case DECREASE_ITEM_COUNT: {
-            const item = state.dataContent.find(item => item._id == action.itemId);
-            if(item.type == 'bun') {
+            const item = state.dataContent.find(item => item._id === action.itemId);
+            if(item.type === 'bun') {
                 if (item && item.count > 0)
                     item.count = item.count - 2;
                 else
@@ -58,8 +58,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             };
         }
         case INCREASE_ITEM_COUNT: {
-            const item = state.dataContent.find(item => item._id == action.itemId);
-            if(item.type == 'bun') {
+            const item = state.dataContent.find(item => item._id === action.itemId);
+            if(item.type === 'bun') {
                 if (item)
                     item.count = item.count + 2;
                 else
