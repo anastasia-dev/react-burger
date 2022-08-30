@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 function Profile(path) {
     return (
         <section className={style.profile}>
-            <Link className={path.path === '/forgot-password' ? style.entry + ' ' + style.active : style.entry} to="/forgot-password">
+            <Link className={path.path === '/forgot-password' ? style.entry + ' ' + style.active : style.entry} to="/profile">
                 <ProfileIcon type={path.path ==='/forgot-password' ? "primary" : "secondary"} />
                 <p className="text text_type_main-default">Личный кабинет</p>
             </Link>
