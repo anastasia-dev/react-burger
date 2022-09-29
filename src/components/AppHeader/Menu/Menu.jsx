@@ -9,11 +9,13 @@ Menu.propTypes = {
 };
 
 function Menu(props) {
+    let current = false;
+    if ((props.text === "Конструктор" && props.location === '/') || (props.text === "Лента заказов" && props.location === '/order-history')) current = true;
     return (
         <section className={style.menu}>
             <Link to={props.text === "Конструктор" ? "/" : "/order-history"}>
-                {props.text === "Конструктор" ? <BurgerIcon type="primary"/> : <ListIcon type="secondary"/>}
-                <p className="text text_type_main-default">{props.text}</p>
+                {current ? <BurgerIcon type="primary"/> : <ListIcon type="secondary"/>}
+                <p className={`text text_type_main-default ${current ? style.active : ""}`}>{props.text}</p>
             </Link>
         </section>
     );

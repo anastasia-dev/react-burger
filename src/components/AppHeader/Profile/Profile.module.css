@@ -12,3 +12,7 @@
 .profile a {
     text-decoration: none;
 }
+
+p.activeLink {
+    color: white;
+}

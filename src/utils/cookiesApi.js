@@ -33,3 +33,11 @@ export function getCookie(name) {
 export function deleteCookie(name) {
     setCookie(name, null, { expires: -1 });
 }
+
+
+export const getTokens = (res) => {
+    const accessToken = res.accessToken.split('Bearer ')[1];
+    const refreshToken = res.refreshToken;
+    setCookie('token', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+};

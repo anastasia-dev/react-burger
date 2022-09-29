@@ -1,15 +1,20 @@
 import {
-    SET_REGISTRATION_REQUEST,
-    SET_REGISTRATION_SUCCESS,
-    SET_REGISTRATION_ERROR
+    SET_REGISTER_REQUEST,
+    SET_REGISTER_SUCCESS,
+    SET_REGISTER_FAILED
 } from "../services/actions/userRegistration";
 import {checkApiResponse} from "./apiCheck";
-import {getCookie, setCookie,deleteCookie} from "./cookiesApi";
+import {getTokens} from "./cookiesApi";
 
 import {URL_REGISTER} from "./constants";
 
-const userRequest = async (data, path) => {
-    return await fetch(URL_REGISTER, {
+export const registerNewUser = (regData, redirect) => {
+
+return async function (dispatch) {
+    dispatch({
+        type: SET_REGISTER_REQUEST
+    });
+    await fetch(URL_REGISTER, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -19,30 +24,30 @@ const userRequest = async (data, path) => {
         },
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
-        body: JSON.stringify(data)
-    })
-}
-
-export function registerNewUser(regData) {
-    return async function (dispatch) {
-        dispatch({
-            type: SET_REGISTRATION_REQUEST
-        });
-        await userRequest(regData, 'auth/register')
-            .then(checkApiResponse)
-            .then(res => {
-                makeAuthToken(res);
-                localStorage.setItem('refreshToken',res.refreshToken);
+        body: JSON.stringify(regData)
+    }).then(checkApiResponse)
+        .then((res) => {
+           getTokens(res);
+            if (res && res.success) {
                 dispatch({
-                    type: SET_REGISTRATION_SUCCESS,
-                    data: res.user
+                    type: SET_REGISTER_SUCCESS,
+                    user: res.user
                 });
-            })
-            .catch( e => {
-                e ? alert(e) : alert("Произошла ошибка");
+                redirect();
+            } else {
                 dispatch({
-                    type: SET_REGISTRATION_ERROR
+                    type: SET_REGISTER_FAILED,
+                    user: {}
+                });
+            }
+        })
+        .catch((e) => {
+                dispatch({
+                    type: SET_REGISTER_FAILED,
+                    user: {}
                 })
-            } )
-    }
+            }
+        );
+};
+
 }

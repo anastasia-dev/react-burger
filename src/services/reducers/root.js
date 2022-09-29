@@ -4,6 +4,7 @@ import {ingredientsReducer} from "./burgerIngredientsReducer"
 import {activeTabReducer} from "../reducers/activeTabReducer";
 import {burgerConstructorReducer} from "./burgerConstructorReducer";
 import {orderNumberReducer} from "./odrerNumberReducer";
+import {userReducer} from "./userReducer";
 
 export const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
     editableIngredients: burgerConstructorReducer,
     orderNumber: orderNumberReducer,
     activeTab: activeTabReducer,
+    user: userReducer,
 });

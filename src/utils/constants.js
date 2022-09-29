@@ -9,20 +9,5 @@ export const URL_LOGIN = URL_API_AUTH + 'login';
 export const URL_REGISTER = URL_API_AUTH + 'register';
 export const URL_LOGOUT = URL_API_AUTH + 'logout';
 export const URL_TOKEN = URL_API_AUTH + 'token';
-
-
-export const MENU_LINKS = [
-    {
-        name: 'Профиль',
-        link: '/profile'
-    },
-    {
-        name: 'История заказов',
-        link: '/profile/orders'
-    },
-    {
-        name: 'Выход',
-        link: '/login'
-    }
-];
+export const URL_USER_DATA = URL_API_AUTH + 'user';
 

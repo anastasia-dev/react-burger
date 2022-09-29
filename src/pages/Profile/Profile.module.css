@@ -36,6 +36,10 @@
     color: #8585AD;
 }
 
+span.menuItemLink {
+    cursor: pointer;
+}
+
 .menuItemLinkActive {
     color: white;
 }

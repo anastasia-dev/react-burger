@@ -4,13 +4,11 @@ import Tabs from "./Tabs/Tabs";
 import style from './BurgerIngredients.module.css'
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import PropTypes from "prop-types";
 import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
 import {HIDE_INGREDIENT_DETAILS, SHOW_INGREDIENT_DETAILS} from "../../services/actions/ingredientDetails";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
-
-
+import PropTypes from "prop-types";
 
 BurgerIngredients.propTypes = {
     dataContent: PropTypes.arrayOf(IngridientPropType.isRequired)
@@ -28,6 +26,7 @@ function BurgerIngredients () {
     const refMains = React.useRef(null);
 
     const showItemDetails = (elem) => {
+        window.history.replaceState(null, null,`/ingredients/${elem._id}`);
         dispatch({
             type: SHOW_INGREDIENT_DETAILS,
             item: elem
@@ -35,6 +34,7 @@ function BurgerIngredients () {
     }
 
     const closeItemDetails = () => {
+        window.history.replaceState(null,null,`/`);
         dispatch({
             type: HIDE_INGREDIENT_DETAILS
         });

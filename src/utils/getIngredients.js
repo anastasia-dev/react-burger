@@ -22,7 +22,6 @@ export function getIngredients () {
                 });
             })
             .catch (e => {
-                //alert(e);
                 dispatch({
                     type: SHOW_INGREDIENTS_ERROR,
                     data: `Произошла ошибка ${e}`

@@ -27,7 +27,7 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
            <BrowserRouter>
-               <Route children={<App />} />
+               <App />
            </BrowserRouter>
         </Provider>
     </React.StrictMode>,

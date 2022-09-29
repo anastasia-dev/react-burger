@@ -5,12 +5,11 @@ import {useSelector} from "react-redux";
 
 
 IngredientDetails.propTypes = {
-    dataContent: IngridientPropType.isRequired
+    detailsItem: IngridientPropType
 };
 
 function IngredientDetails () {
     const data = useSelector(state => state.detailsItem.item);
-
     return (data &&
         <div className={style.ingredientBox}>
             <header>

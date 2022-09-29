@@ -1,6 +1,6 @@
 import React from 'react';
 import style from "./App.module.css";
-import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import AppHeader from "../../components/AppHeader/AppHeader";
 import NotFound from "../../pages/NotFound/NotFound";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
@@ -11,24 +11,56 @@ import ResetPassword from "../../pages/ResetPassword/ResetPassword";
 import IngredientsId from "../../pages/IngredientsId/IngredientsId";
 import Home from "../Home/Home";
 import OrderHistory from "../../pages/OrderHistory/OrderHistory";
+import ProfileOrderHistory from "../../pages/Profile/ProfileOrderHistory/ProfileOrderHistory";
+import {ProtectedFromUnauthorizedRoute} from "../ProtectedFromUnauthorizedRoute/ProtectedFromUnauthorizedRoute";
+import {ProtectedFromAuthorizedRoute} from "../ProtectedFromAuthorizedRoute/ProtectedFromAuthorizedRoute";
 
 function App () {
       return (
         <div className={style.App}>
-            <Router>
-              <AppHeader />
-                <Switch>
-                    <Route path="/login" exact={true} children={<Login />} />
-                    <Route path="/forgot-password" exact={true} children={<ForgotPassword />} />
-                    <Route path="/reset-password" exact={true} children={<ResetPassword />} />
-                    <Route path="/register" exact={true} children={<Register />} />
-                    <Route path="/profile" exact={true} children={<Profile />} />
-                    <Route path="/ingredients" children={<IngredientsId />} />
-                    <Route path="/order-history" children={<OrderHistory />} />
-                    <Route path="/" exact={true} children={<Home />} />
-                    <Route children={<NotFound />} />
-                </Switch>
-            </Router>
+            <AppHeader />
+            <Routes>
+                    <Route path="/login" element={
+                        <ProtectedFromAuthorizedRoute>
+                            <Login />
+                        </ProtectedFromAuthorizedRoute>
+                    } />
+                    <Route path="/forgot-password" element={
+                        <ProtectedFromAuthorizedRoute>
+                            <ForgotPassword />
+                        </ProtectedFromAuthorizedRoute>
+                    } />
+                    <Route path="/reset-password" element={
+                        <ProtectedFromAuthorizedRoute>
+                            <ResetPassword />
+                        </ProtectedFromAuthorizedRoute>
+                    } />
+                    <Route path="/register" element={
+                        <ProtectedFromAuthorizedRoute>
+                            <Register />
+                        </ProtectedFromAuthorizedRoute>
+                    } />
+
+                    <Route path="/profile" element={
+                        <ProtectedFromUnauthorizedRoute>
+                            <Profile />
+                        </ProtectedFromUnauthorizedRoute>
+                    } />
+                    <Route path="/profile/orders" element={
+                        <ProtectedFromUnauthorizedRoute>
+                            <ProfileOrderHistory />
+                        </ProtectedFromUnauthorizedRoute>
+                    } />
+                    <Route path="/profile/orders/:id" element={
+                        <ProtectedFromUnauthorizedRoute>
+                            <ProfileOrderHistory />
+                        </ProtectedFromUnauthorizedRoute>
+                    } />
+                    <Route path="/ingredients/:id" element={<IngredientsId />} />
+                    <Route path="/order-history" element={<OrderHistory />} />
+                    <Route path="/" element={<Home />} />
+                    <Route element={<NotFound />} />
+            </Routes>
         </div>
       );
 }
