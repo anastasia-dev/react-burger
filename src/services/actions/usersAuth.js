@@ -20,12 +20,18 @@ import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA}
 import {deleteCookie, getCookie, getTokens} from "./cookiesApi";
 import {useNavigate} from "react-router-dom";
 
+function setForgotPassFailed() {
+    return {
+        type: SET_FORGOT_PASSWORD_FAILED,
+    }
+}
+
 export const forgotPassword = ({ email }, redirect) => {
     return async function (dispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
-        await fetch(URL_PWD_RESET, {
+        await fetchAndCheckResponse(URL_PWD_RESET, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -37,7 +43,6 @@ export const forgotPassword = ({ email }, redirect) => {
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({ email: email })
         })
-            .then(checkApiResponse)
             .then(res => {
                 if (res && res.success) {
                     dispatch({
@@ -47,9 +52,8 @@ export const forgotPassword = ({ email }, redirect) => {
                 }
             })
             .catch(e => {
-                dispatch({
-                    type: SET_FORGOT_PASSWORD_FAILED
-                })
+                e ? alert(e) : alert("Не удалось получить данные");
+                dispatch(setForgotPassFailed());
             })
     }
 
@@ -60,14 +64,13 @@ export const resetPassword = ({ token, password }, redirect) => {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
-        await fetch(URL_PWD_RESET_DONE, {
+        await fetchAndCheckResponse(URL_PWD_RESET_DONE, {
             body: JSON.stringify({ token, password }),
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-            .then(checkApiResponse)
             .then(res => {
                 if (res && res.success) {
                     dispatch({
@@ -75,15 +78,12 @@ export const resetPassword = ({ token, password }, redirect) => {
                     });
                     redirect();
                 } else {
-                    dispatch({
-                        type: SET_FORGOT_PASSWORD_FAILED
-                    });
+                    dispatch(setForgotPassFailed());
                 }
             })
             .catch(e => {
-                dispatch({
-                    type: SET_FORGOT_PASSWORD_FAILED
-                })
+                e ? alert(e) : alert("Не удалось получить данные");
+                dispatch(setForgotPassFailed());
             })
     }
 
@@ -91,7 +91,7 @@ export const resetPassword = ({ token, password }, redirect) => {
 
 export const login = ({email, password}, redirect) => {
     return function (dispatch) {
-        fetch(URL_LOGIN, {
+        fetchAndCheckResponse(URL_LOGIN, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -102,8 +102,7 @@ export const login = ({email, password}, redirect) => {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({email, password})
-        }).then(checkApiResponse)
-            .then((res) => {
+        }).then((res) => {
                 getTokens(res);
                 if (res && res.success) {
                     dispatch({
@@ -122,6 +121,7 @@ export const login = ({email, password}, redirect) => {
                 }
             })
             .catch((e) => {
+                e ? alert(e) : alert("Не удалось авторизоваться");
                 dispatch({
                     type: SET_LOGIN_FAILED,
                     user: {}
@@ -138,7 +138,7 @@ export const logout = (redirect) => {
         dispatch({
             type: SET_LOGOUT_REQUEST
         });
-        fetch(URL_LOGOUT, {
+        fetchAndCheckResponse(URL_LOGOUT, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -149,8 +149,7 @@ export const logout = (redirect) => {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({ token: localStorage.refreshToken })
-        }).then(checkApiResponse)
-            .then((res) => {
+        }).then((res) => {
                 localStorage.removeItem('refreshToken');
                 deleteCookie('token');
                 if (res && res.success) {
@@ -164,11 +163,12 @@ export const logout = (redirect) => {
                     });
                 }
             })
-            .catch(() =>
+            .catch((e) => {
+                e ? alert(e) : alert("Не удалось получить авторизоваться");
                 dispatch({
                     type: SET_LOGIN_FAILED
-                })
-            );
+                });
+            });
     };
 };
 
@@ -179,7 +179,7 @@ export const refreshAuthToken = () => {
             type: SET_TOKEN_REQUEST,
             user: {}
         });
-        return await fetch(URL_USER_DATA, {
+        return await fetchAndCheckResponse(URL_USER_DATA, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -190,8 +190,7 @@ export const refreshAuthToken = () => {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({ token: localStorage.refreshToken })
-        }).then(checkApiResponse)
-            .then((res) => {
+        }).then((res) => {
                 const navigate = useNavigate();
                 const redirect = () => {
                     navigate('/login')
@@ -229,7 +228,7 @@ export const getUser = () => {
             type: SET_USER_REQUEST,
             user: {}
         });
-        fetch(URL_USER_DATA, {
+        fetchAndCheckResponse(URL_USER_DATA, {
             method: 'GET',
             mode: 'cors',
             cache: 'no-cache',
@@ -240,9 +239,7 @@ export const getUser = () => {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-        })
-            .then(checkApiResponse)
-            .then((res) => {
+        }).then((res) => {
                     dispatch({
                         type: SET_USER_SUCCESS,
                         user: res.user
@@ -265,7 +262,7 @@ export const updateUser = ({name, email}) => {
             type: SET_USER_UPDATE_REQUEST,
             user: {}
         });
-        fetch(URL_USER_DATA, {
+        fetchAndCheckResponse(URL_USER_DATA, {
             method: 'PATCH',
             mode: 'cors',
             cache: 'no-cache',
@@ -277,9 +274,7 @@ export const updateUser = ({name, email}) => {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({ user : { name: name, email: email }})
-        })
-            .then(checkApiResponse)
-            .then((res) => {
+        }).then((res) => {
                 if (res && res.success) {
                     dispatch({
                         type: SET_USER_UPDATE_SUCCESS,
@@ -303,6 +298,10 @@ export const updateUser = ({name, email}) => {
             });
     };
 };
+
+export const fetchAndCheckResponse = (url, options) => {
+    return fetch(url, options).then(checkApiResponse);
+}
 
 export const isAuthorized = () => {
     return getCookie('token') !== undefined || localStorage.refreshToken;
