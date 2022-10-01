@@ -2,11 +2,11 @@ import {
     SET_REGISTER_REQUEST,
     SET_REGISTER_SUCCESS,
     SET_REGISTER_FAILED
-} from "../services/actions/userRegistration";
-import {checkApiResponse} from "./apiCheck";
-import {getTokens} from "./cookiesApi";
+} from "./userRegistration";
+import {getTokens} from "../../utils/cookiesApi";
 
-import {URL_REGISTER} from "./constants";
+import {URL_REGISTER} from "../../utils/constants";
+import {fetchAndCheckResponse} from "./usersAuth";
 
 export const registerNewUser = (regData, redirect) => {
 
@@ -14,7 +14,7 @@ return async function (dispatch) {
     dispatch({
         type: SET_REGISTER_REQUEST
     });
-    await fetch(URL_REGISTER, {
+    await fetchAndCheckResponse(URL_REGISTER, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -25,8 +25,7 @@ return async function (dispatch) {
         redirect: 'follow',
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(regData)
-    }).then(checkApiResponse)
-        .then((res) => {
+    }).then((res) => {
            getTokens(res);
             if (res && res.success) {
                 dispatch({
@@ -41,7 +40,7 @@ return async function (dispatch) {
                 });
             }
         })
-        .catch((e) => {
+        .catch(() => {
                 dispatch({
                     type: SET_REGISTER_FAILED,
                     user: {}

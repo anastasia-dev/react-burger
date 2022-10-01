@@ -1,11 +1,11 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import {isAuthorized} from "../../utils/usersAuth";
+import {isAuthorized} from "../../services/actions/usersAuth";
 
 export const ProtectedFromAuthorizedRoute = ({ children }) => {
     const navigate = useNavigate();
 
-    let isAuth = isAuthorized();
+    const isAuth = isAuthorized();
     useEffect(() => {
         if (isAuth)
             navigate("/");

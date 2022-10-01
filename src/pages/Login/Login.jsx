@@ -4,7 +4,7 @@ import style from "./Login.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate, useLocation} from "react-router-dom";
-import {login} from "../../utils/usersAuth";
+import {login} from "../../services/actions/usersAuth";
 
 function Login() {
     const dispatch = useDispatch();
@@ -32,36 +32,38 @@ function Login() {
 
     return (
         <section className={styleMain.formPageContainer}>
-            <header className={styleMain.headBlock}>
+            <h1 className={styleMain.headBlock}>
                 <p className="text text_type_main-medium">Вход</p>
-            </header>
+            </h1>
             <main className={styleMain.mainBlock}>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        onChange={onChange}
-                        name={'email'}
-                        size={'default'}
-                    />
-                </section>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Пароль'}
-                        onChange={onChange}
-                        icon={'ShowIcon'}
-                        name={'password'}
-                        size={'default'}
-                    />
-                </section>
+                <form onSubmit={onLogin}>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'email'}
+                            placeholder={'E-mail'}
+                            value={form.email}
+                            onChange={onChange}
+                            name={'email'}
+                            size={'default'}
+                        />
+                    </section>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Пароль'}
+                            value={form.password}
+                            onChange={onChange}
+                            icon={'ShowIcon'}
+                            name={'password'}
+                            size={'default'}
+                        />
+                    </section>
+                    <section className={styleMain.bottomButton}>
+                        <Button type="primary" size="large">Войти</Button>
+                    </section>
+                </form>
             </main>
             <footer>
-                <section className={styleMain.bottomButton}>
-                    <form onSubmit={onLogin}>
-                        <Button type="primary" size="large">Войти</Button>
-                    </form>
-                </section>
                 <section className={styleMain.bottomText}>
                     <p className="text text_type_main-small">
                         Вы новый пользователь? <Link to="/register">Зарегистрироваться</Link>

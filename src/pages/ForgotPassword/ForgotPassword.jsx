@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./ForgotPassword.module.css";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {forgotPassword} from "../../utils/usersAuth";
+import {forgotPassword} from "../../services/actions/usersAuth";
 
 
 function ForgotPassword() {
@@ -35,29 +35,29 @@ function ForgotPassword() {
 
     return (
         <section className={style.formPageContainer}>
-            <header className={style.headBlock}>
+            <h1 className={style.headBlock}>
                 <p className="text text_type_main-medium">Восстановление пароля</p>
-            </header>
+            </h1>
             <main className={style.mainBlock}>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        onChange={onChange}
-                        value={form.email}
-                        name={'email'}
-                        size={'default'}
-                    />
-                </section>
-            </main>
-            <footer>
-                <section className={style.bottomButton}>
-                    <form onSubmit={forgotPass}>
+                <form onSubmit={forgotPass}>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'email'}
+                            placeholder={'E-mail'}
+                            onChange={onChange}
+                            value={form.email}
+                            name={'email'}
+                            size={'default'}
+                        />
+                    </section>
+                    <section className={style.bottomButton}>
                         <Button type="primary" size="large">
                             {'Восстановить'}
                         </Button>
-                    </form>
-                </section>
+                    </section>
+                </form>
+            </main>
+            <footer>
                 <section className={style.bottomText}>
                     <p className="text text_type_main-small">
                         Вспомнили пароль? <Link to={"/login"}>Войти</Link>

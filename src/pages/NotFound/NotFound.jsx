@@ -6,11 +6,11 @@ import {Link} from "react-router-dom";
 function NotFound() {
     return (
         <section className={style.notFound}>
-            <header>
+            <h1>
                 <p className="text text_type_main-large">
                     Страница не найдена :(
                 </p>
-            </header>
+            </h1>
             <section>
                 <p className="text text_type_main-medium">
                     Никакой паники, можно перейти на:

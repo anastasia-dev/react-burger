@@ -3,7 +3,7 @@ import style from "./Profile.module.css";
 import {NavLink, useNavigate} from "react-router-dom";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDispatch, useSelector} from "react-redux";
-import {getUser, logout, updateUser} from "../../utils/usersAuth";
+import {getUser, logout, updateUser} from "../../services/actions/usersAuth";
 
 
 function Profile() {
@@ -32,13 +32,17 @@ function Profile() {
     }
 
     const onCancelUpdate = (e) => {
+        console.log('cansel');
         e.preventDefault();
         setValue({ email: user.email, name: user.name, password: '' });
+        console.log('works');
     }
 
     const onUpdateUser = (e) => {
+        console.log('update request');
         e.preventDefault();
         dispatch(updateUser({email: form.email, name:form.name}));
+        console.log('works too');
     }
 
     return (
@@ -72,53 +76,51 @@ function Profile() {
                 </div>
             </div>
             <div className={style.data}>
-                <div className={style.dataItem}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Имя'}
-                        onChange={onChange}
-                        icon={'EditIcon'}
-                        value={form.name}
-                        name={'name'}
-                        size={'default'}
-                    />
-                </div>
-                <div className={style.dataItem}>
-                    <Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        onChange={onChange}
-                        icon={'EditIcon'}
-                        value={form.email}
-                        name={'email'}
-                        size={'default'}
-                    />
-                </div>
-                <div className={style.dataItem}>
-                    <Input
-                        type={'password'}
-                        placeholder={'Пароль'}
-                        onChange={onChange}
-                        icon={'EditIcon'}
-                        value={form.password}
-                        name={'password'}
-                        size={'default'}
-                    />
-                </div>
-                <div className={style.button}>
-                    <form onSubmit={onUpdateUser}>
+                <form onSubmit={onUpdateUser}>
+                    <div className={style.dataItem}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Имя'}
+                            onChange={onChange}
+                            icon={'EditIcon'}
+                            value={form.name}
+                            name={'name'}
+                            size={'default'}
+                        />
+                    </div>
+                    <div className={style.dataItem}>
+                        <Input
+                            type={'email'}
+                            placeholder={'E-mail'}
+                            onChange={onChange}
+                            icon={'EditIcon'}
+                            value={form.email}
+                            name={'email'}
+                            size={'default'}
+                        />
+                    </div>
+                    <div className={style.dataItem}>
+                        <Input
+                            type={'password'}
+                            placeholder={'Пароль'}
+                            onChange={onChange}
+                            icon={'EditIcon'}
+                            value={form.password}
+                            name={'password'}
+                            size={'default'}
+                        />
+                    </div>
+                    <div className={style.button}>
                         <Button type="primary" size="large" >
                             Сохранить
                         </Button>
-                    </form>
-                </div>
-                    <div className={style.button}>
-                        <form onSubmit={onCancelUpdate}>
-                            <Button type="primary" size="large" >
-                                Отменить
-                            </Button>
-                        </form>
                     </div>
+                </form>
+                <div className={style.button}>
+                    <Button type="primary" size="large" onClick={onCancelUpdate}>
+                        Отменить
+                    </Button>
+                </div>
             </div>
         </div>
     )

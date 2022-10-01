@@ -5,7 +5,7 @@
     text-align: center;
 }
 
-.mainBlock header > p {
+.mainBlock h1 > p {
     min-height: 50vh;
 }
 

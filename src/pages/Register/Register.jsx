@@ -4,7 +4,7 @@ import style from "./Register.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {registerNewUser} from "../../utils/newUser";
+import {registerNewUser} from "../../services/actions/newUser";
 
 
 
@@ -26,53 +26,53 @@ function Register() {
     }
     return (
         <section className={styleMain.formPageContainer}>
-            <header className={styleMain.headBlock}>
+            <h1 className={styleMain.headBlock}>
                 <p className="text text_type_main-medium">
                     Регистрация
                 </p>
-            </header>
+            </h1>
             <main className={styleMain.mainBlock}>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Имя'}
-                        value={form.name}
-                        name={'name'}
-                        size={'default'}
-                        onChange={onChange}
-                    />
-                </section>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'email'}
-                        placeholder={'E-mail'}
-                        value={form.email}
-                        name={'email'}
-                        size={'default'}
-                        onChange={onChange}
-                    />
-                </section>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'password'}
-                        placeholder={'Пароль'}
-                        icon={'HideIcon'}
-                        value={form.password}
-                        name={'password'}
-                        error={false}
-                        size={'default'}
-                        onChange={onChange}
-                    />
-                </section>
+                <form onSubmit={newRegister}>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Имя'}
+                            value={form.name}
+                            name={'name'}
+                            size={'default'}
+                            onChange={onChange}
+                        />
+                    </section>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'email'}
+                            placeholder={'E-mail'}
+                            value={form.email}
+                            name={'email'}
+                            size={'default'}
+                            onChange={onChange}
+                        />
+                    </section>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'password'}
+                            placeholder={'Пароль'}
+                            icon={'HideIcon'}
+                            value={form.password}
+                            name={'password'}
+                            error={false}
+                            size={'default'}
+                            onChange={onChange}
+                        />
+                    </section>
+                    <section className={styleMain.bottomButton}>
+                        <Button type="primary" size="large" >
+                            Зарегистрироваться
+                        </Button>
+                    </section>
+                </form>
             </main>
             <footer>
-                <section className={styleMain.bottomButton}>
-                    <form onSubmit={newRegister}>
-                    <Button type="primary" size="large" >
-                        Зарегистрироваться
-                    </Button>
-                    </form>
-                </section>
                 <section className={styleMain.bottomText}>
                     <p className="text text_type_main-small">
                         Уже зарегистрированы? <Link to="/login">Войти</Link>

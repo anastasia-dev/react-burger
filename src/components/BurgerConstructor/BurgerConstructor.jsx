@@ -3,22 +3,15 @@ import style from './BurgerConstructor.module.css'
 import {CurrencyIcon, Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import PropTypes from "prop-types";
-import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
-import {getOrderNumber} from "../../utils/getOrderNumber";
+import {getOrderNumber} from "../../services/actions/getOrderNumber";
 import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
 import {CLEAR_ORDER_NUMBER} from "../../services/actions/orderNumber";
 import {CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 import {useDrop} from 'react-dnd';
 import EditableItem from "./EditableItem/EditableItem";
-import {isAuthorized} from "../../utils/usersAuth";
+import {isAuthorized} from "../../services/actions/usersAuth";
 import {useLocation, useNavigate} from "react-router-dom";
-
-BurgerConstructor.propTypes = {
-    ingredientsData: PropTypes.arrayOf(IngridientPropType.isRequired)
-};
-
 
 function BurgerConstructor () {
     const elements  = useSelector(state => state.ingredients);

@@ -2,9 +2,9 @@ import {
     SHOW_INGREDIENTS_ERROR,
     SHOW_INGREDIENTS_REQUEST,
     SHOW_INGREDIENTS_SUCCESS
-} from "../services/actions/ingredients";
-import {checkApiResponse} from "./apiCheck";
-import {URL_INGREDIENTS} from "./constants";
+} from "./ingredients";
+import {checkApiResponse} from "../../utils/apiCheck";
+import {URL_INGREDIENTS} from "../../utils/constants";
 
 const getDataInfo = URL_INGREDIENTS;
 

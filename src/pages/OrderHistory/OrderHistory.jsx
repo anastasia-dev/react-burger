@@ -6,11 +6,11 @@ import {Link} from "react-router-dom";
 function OrderHistory() {
     return (
         <section className={style.mainBlock}>
-            <header>
+            <h1>
                 <p className="text text_type_main-large">
                     Контент уже в пути, нужно немного потерпеть...
                 </p>
-            </header>
+            </h1>
             <section>
                 <p className="text text_type_main-medium">
                     Советуем вернуться на:

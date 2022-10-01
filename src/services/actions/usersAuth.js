@@ -1,4 +1,4 @@
-import {checkApiResponse} from "./apiCheck";
+import {checkApiResponse} from "../../utils/apiCheck";
 import {
     SET_FORGOT_PASSWORD_FAILED,
     SET_FORGOT_PASSWORD_REQUEST,
@@ -15,9 +15,9 @@ import {
     SET_USER_UPDATE_FAILED,
     SET_USER_UPDATE_REQUEST,
     SET_USER_UPDATE_SUCCESS
-} from "../services/actions/userRegistration";
-import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA} from "./constants";
-import {deleteCookie, getCookie, getTokens} from "./cookiesApi";
+} from "./userRegistration";
+import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA} from "../../utils/constants";
+import {deleteCookie, getCookie, getTokens} from "../../utils/cookiesApi";
 import {useNavigate} from "react-router-dom";
 
 function setForgotPassFailed() {

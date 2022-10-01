@@ -4,7 +4,7 @@ import style from "./ResetPassword.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {resetPassword} from "../../utils/usersAuth";
+import {resetPassword} from "../../services/actions/usersAuth";
 
 function ResetPassword() {
     const dispatch = useDispatch();
@@ -33,39 +33,39 @@ function ResetPassword() {
 
     return (
         <section className={styleMain.formPageContainer}>
-            <header className={styleMain.headBlock}>
+            <h1 className={styleMain.headBlock}>
                 <p className="text text_type_main-medium">Восстановление пароля</p>
-            </header>
+            </h1>
             <main className={styleMain.mainBlock}>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Новый пароль'}
-                        onChange={onChange}
-                        value={form.password}
-                        name={'password'}
-                        size={'default'}
-                    />
-                </section>
-                <section className={style.mailInput}>
-                    <Input
-                        type={'text'}
-                        placeholder={'Введите код из письма'}
-                        onChange={onChange}
-                        value={form.token}
-                        name={'token'}
-                        size={'default'}
-                    />
-                </section>
+                <form onSubmit={onReset}>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Новый пароль'}
+                            onChange={onChange}
+                            value={form.password}
+                            name={'password'}
+                            size={'default'}
+                        />
+                    </section>
+                    <section className={style.mailInput}>
+                        <Input
+                            type={'text'}
+                            placeholder={'Введите код из письма'}
+                            onChange={onChange}
+                            value={form.token}
+                            name={'token'}
+                            size={'default'}
+                        />
+                    </section>
+                    <section className={styleMain.bottomButton}>
+                            <Button type="primary" size="large">
+                                {'Сохранить'}
+                            </Button>
+                    </section>
+                </form>
             </main>
             <footer>
-                <section className={styleMain.bottomButton}>
-                    <form onSubmit={onReset}>
-                        <Button type="primary" size="large">
-                            {'Сохранить'}
-                        </Button>
-                    </form>
-                </section>
                 <section className={styleMain.bottomText}>
                     <p className="text text_type_main-small">Вспомнили пароль? <Link to="/login">Войти</Link></p>
                 </section>
