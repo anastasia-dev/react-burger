@@ -1,0 +1,18 @@
+.mainBlock {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+}
+
+.mainBlock h1 > p {
+    min-height: 50vh;
+}
+
+.mainBlock p {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+}

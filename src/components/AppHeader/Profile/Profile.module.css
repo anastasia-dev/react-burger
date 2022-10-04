@@ -8,3 +8,11 @@
     margin-right: 20px;
     color: rgb(133, 133, 173);
 }
+
+.profile a {
+    text-decoration: none;
+}
+
+p.activeLink {
+    color: white;
+}

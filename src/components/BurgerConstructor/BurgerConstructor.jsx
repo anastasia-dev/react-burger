@@ -3,26 +3,22 @@ import style from './BurgerConstructor.module.css'
 import {CurrencyIcon, Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import PropTypes from "prop-types";
-import {IngridientPropType} from "../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
-import {getOrderNumber} from "../../utils/getOrderNumber";
+import {getOrderNumber} from "../../services/actions/getOrderNumber";
 import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
 import {CLEAR_ORDER_NUMBER} from "../../services/actions/orderNumber";
 import {CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 import {useDrop} from 'react-dnd';
 import EditableItem from "./EditableItem/EditableItem";
-
-BurgerConstructor.propTypes = {
-    ingredientsData: PropTypes.arrayOf(IngridientPropType.isRequired)
-};
-
+import {isAuthorized} from "../../services/actions/usersAuth";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function BurgerConstructor () {
     const elements  = useSelector(state => state.ingredients);
     const editableElements = useSelector(state => state.editableIngredients);
     const orderNumberLoading = useSelector(state => state.orderNumber.orderNumberLoading);
-
+    const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
 
     const getSum = () => {
@@ -38,16 +34,21 @@ function BurgerConstructor () {
     }
 
     const showOrderModal = () => {
-        let order = [];
-        if (editableElements.bun) {
-            order.push(editableElements.bun._id);
-            order.push(editableElements.bun._id);
-        } else {
-            alert("Для оформления заказа добавьте в заказ булку");
-            return;
+        if (!isAuthorized()) {
+            navigate('/login', {state: {from: location}});
         }
-        editableElements.ingredientList.map(element => element._id).forEach(item => order.push(item));
-        dispatch(getOrderNumber({ ingredients: order }));
+        else {
+            let order = [];
+            if (editableElements.bun) {
+                order.push(editableElements.bun._id);
+                order.push(editableElements.bun._id);
+            } else {
+                alert("Для оформления заказа добавьте в заказ булку");
+                return;
+            }
+            editableElements.ingredientList.map(element => element._id).forEach(item => order.push(item));
+            dispatch(getOrderNumber({ingredients: order}));
+        }
     }
 
     const hideOrderModal = () => {

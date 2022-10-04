@@ -2,9 +2,9 @@ import {
     SHOW_ORDER_NUMBER_SUCCESS,
     SHOW_ORDER_NUMBER_ERROR,
     SHOW_ORDER_NUMBER_REQUEST
-} from "../services/actions/orderNumber";
-import {URL_ORDERS} from "./constants";
-import {checkApiResponse} from "./apiCheck";
+} from "./orderNumber";
+import {URL_ORDERS} from "../../utils/constants";
+import {checkApiResponse} from "../../utils/apiCheck";
 
 
 const requestNumber = URL_ORDERS;

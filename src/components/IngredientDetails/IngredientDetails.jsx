@@ -1,26 +1,24 @@
 import React from "react";
 import style from './IngredientDetails.module.css'
-import {IngridientPropType} from "../../types/Ingredients";
+import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 
-IngredientDetails.propTypes = {
-    dataContent: IngridientPropType.isRequired
-};
-
 function IngredientDetails () {
-    const data = useSelector(state => state.detailsItem.item);
+    const { id } = useParams();
+    const items = useSelector((store) => store.ingredients);
+    const data = items.dataContent?.find(elem => elem._id === id);
 
     return (data &&
         <div className={style.ingredientBox}>
-            <header>
+            <h1>
                 <section className={style.image}>
                     <img src={data.image_large} alt={data.name} />
                 </section>
                 <section className={style.name}>
                     <p className="text text_type_main-medium">{data.name}</p>
                 </section>
-            </header>
+            </h1>
             <main className={style.ingredientCaption}>
                 <section className={style.elemCaption}>
                     <p className="text text_type_main-small">Калории, ккал</p>
