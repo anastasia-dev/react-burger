@@ -3,17 +3,12 @@ import * as ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './Modal.module.css';
-import PropTypes from "prop-types";
-
-Modal.propTypes = {
-    title: PropTypes.string,
-    close: PropTypes.func.isRequired
-};
+import {IModal} from "../../interfaces/IModal";
 
 const modalRoot = document.getElementById("modal-root");
 
-function Modal (props) {
-    const pressEsc = React.useCallback((e) => {
+function Modal (props:IModal) {
+    const pressEsc = React.useCallback((e: any) => {
         if (e.key === 'Escape') {
             props.close();
         }

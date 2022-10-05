@@ -1,8 +1,9 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, FC} from "react";
 import {isAuthorized} from "../../services/actions/usersAuth";
+import {IProtect} from "../../interfaces/IProtect";
 
-export const ProtectedFromAuthorizedRoute = ({ children }) => {
+export const ProtectedFromAuthorizedRoute = ({ children }:IProtect) => {
     const navigate = useNavigate();
 
     const isAuth = isAuthorized();
@@ -12,7 +13,7 @@ export const ProtectedFromAuthorizedRoute = ({ children }) => {
     }, []);
 
     if (isAuth) {
-        return;
+        return (<></>);
     } else {
         return children;
     }

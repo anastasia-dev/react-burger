@@ -2,12 +2,13 @@ import React from "react";
 import style from './IngredientDetails.module.css'
 import {useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {IIngredient} from "../../interfaces/IIngredient";
 
 
 function IngredientDetails () {
     const { id } = useParams();
-    const items = useSelector((store) => store.ingredients);
-    const data = items.dataContent?.find(elem => elem._id === id);
+    const items = useSelector((store: any) => store.ingredients);
+    const data = items.dataContent?.find((elem: IIngredient) => elem._id === id);
 
     return (data &&
         <div className={style.ingredientBox}>

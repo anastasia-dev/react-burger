@@ -1,8 +1,9 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {isAuthorized} from "../../services/actions/usersAuth";
+import {IProtect} from "../../interfaces/IProtect";
 
-export const ProtectedFromUnauthorizedRoute = ({ children }) => {
+export const ProtectedFromUnauthorizedRoute = ({ children }:IProtect) => {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -13,7 +14,7 @@ export const ProtectedFromUnauthorizedRoute = ({ children }) => {
     }, []);
 
     if (!isAuth)
-        return;
+        return (<></>);
     else
         return children;
 };

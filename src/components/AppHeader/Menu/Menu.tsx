@@ -1,15 +1,15 @@
 import React from "react";
 import style from "./Menu.module.css";
 import {BurgerIcon, ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
-Menu.propTypes = {
-    text: PropTypes.string.isRequired
-};
+interface IMenu {
+    text: string,
+    location: string
+}
 
-function Menu(props) {
-    let current = false;
+function Menu(props: IMenu) {
+    let current: boolean = false;
     if ((props.text === "Конструктор" && props.location === '/') || (props.text === "Лента заказов" && props.location === '/order-history')) current = true;
     return (
         <section className={style.menu}>

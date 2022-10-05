@@ -1,4 +1,4 @@
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string | null, props?: any) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -9,7 +9,7 @@ export function setCookie(name, value, props) {
     if (exp && exp.toUTCString) {
         props.expires = exp.toUTCString();
     }
-    value = encodeURIComponent(value);
+    value = (value != null) ? encodeURIComponent(value) : null;
     let updatedCookie = name + '=' + value;
     for (const propName in props) {
         updatedCookie += '; ' + propName;
@@ -22,7 +22,7 @@ export function setCookie(name, value, props) {
 }
 
 
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
@@ -30,12 +30,12 @@ export function getCookie(name) {
 }
 
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
     setCookie(name, null, { expires: -1 });
 }
 
 
-export const getTokens = (res) => {
+export const getTokens = (res: { accessToken: string, refreshToken: string} ) => {
     const accessToken = res.accessToken.split('Bearer ')[1];
     const refreshToken = res.refreshToken;
     setCookie('token', accessToken);

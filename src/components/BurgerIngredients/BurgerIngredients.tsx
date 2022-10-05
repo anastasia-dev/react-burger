@@ -5,10 +5,23 @@ import style from './BurgerIngredients.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
 import {useLocation, useNavigate} from "react-router-dom";
+import {IIngredient} from "../../interfaces/IIngredient";
+import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
+
+function Tabs () {
+    const current = useSelector((state: any) => state.activeTab.activeTab)
+    return (
+        <div className={style.tabs}>
+            <Tab value="one" active={current === 'one'} onClick={()=>{}}>Булки</Tab>
+            <Tab value="two" active={current === 'two'} onClick={()=>{}}>Соусы</Tab>
+            <Tab value="three" active={current === 'three'} onClick={()=>{}}>Начинки</Tab>
+        </div>
+    )
+}
 
 function BurgerIngredients () {
-    const ingredients  = useSelector(state => state.ingredients);
-    const tabs  = useSelector(state => state.activeTab);
+    const ingredients  = useSelector((state: any) => state.ingredients);
+    const tabs  = useSelector((state: any) => state.activeTab);
     const dispatch = useDispatch();
     const ref = React.useRef(null);
     const refBuns = React.useRef(null);
@@ -17,7 +30,7 @@ function BurgerIngredients () {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const showItemDetails = (elem) => {
+    const showItemDetails = (elem:IIngredient) => {
         navigate(`/ingredients/${elem._id}`, {state: { background: location }});
     }
 

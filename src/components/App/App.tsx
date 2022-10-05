@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import style from "./App.module.css";
-import {Routes, Route, useLocation} from "react-router-dom";
-import AppHeader from "../../components/AppHeader/AppHeader";
+import {Routes, Route, useLocation } from "react-router-dom";
+import AppHeader from "../AppHeader/AppHeader";
 import NotFound from "../../pages/NotFound/NotFound";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
 import Login from "../../pages/Login/Login";
@@ -19,9 +19,9 @@ import IngredientDetailsModal from "../BurgerIngredients/IngredientDetailsModal/
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 function App () {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const location = useLocation();
-    const background = location.state?.background;
+    const background = (location.state as any)?.background;
 
     React.useEffect(()=>{ dispatch(getIngredients()); }, []);
 

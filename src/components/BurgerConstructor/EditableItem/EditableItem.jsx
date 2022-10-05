@@ -3,7 +3,7 @@ import React, {useRef} from "react";
 import {useDrag, useDrop} from "react-dnd";
 import PropTypes from "prop-types";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IngridientPropType} from "../../../types/Ingredients";
+import {IngredientPropType} from "../../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
 import {SWAP_INGREDIENTS} from "../../../services/actions/constructor";
 
@@ -66,7 +66,7 @@ const EditableItem = (props) => {
 }
 
 EditableItem.propTypes = {
-    item: IngridientPropType.isRequired,
+    item: IngredientPropType.isRequired,
     deleteItem: PropTypes.func.isRequired,
 }
 

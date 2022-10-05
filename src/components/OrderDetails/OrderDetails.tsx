@@ -1,12 +1,12 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import style from './OrderDetails.module.css'
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
 
 function OrderDetails () {
-    const orderState = useSelector(state => state.orderNumber);
+    const orderState = useSelector((state:any) => state.orderNumber);
 
-    let content;
+    let content: ReactElement = (<></>);
     if (orderState.orderNumberFailed) {
         content = (
             <div className={style.orderDetailInfo}>

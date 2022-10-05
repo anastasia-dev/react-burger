@@ -1,4 +1,4 @@
-import React  from "react";
+import React, {ReactElement} from "react";
 import style from './BurgerConstructor.module.css'
 import {CurrencyIcon, Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
@@ -12,19 +12,21 @@ import {useDrop} from 'react-dnd';
 import EditableItem from "./EditableItem/EditableItem";
 import {isAuthorized} from "../../services/actions/usersAuth";
 import {useLocation, useNavigate} from "react-router-dom";
+import {IIngredient} from "../../interfaces/IIngredient";
 
 function BurgerConstructor () {
-    const elements  = useSelector(state => state.ingredients);
-    const editableElements = useSelector(state => state.editableIngredients);
-    const orderNumberLoading = useSelector(state => state.orderNumber.orderNumberLoading);
+    const elements  = useSelector((state: any) => state.ingredients);
+    const editableElements = useSelector((state: any)  => state.editableIngredients);
+    const orderNumberLoading = useSelector((state: any)  => state.orderNumber.orderNumberLoading);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
+    let content: ReactElement = (<></>);
 
     const getSum = () => {
-        let sum = 0;
+        let sum: number = 0;
         if(editableElements.ingredientList) {
-            sum += editableElements.ingredientList.reduce(function (prevSum, elem) {
+            sum += editableElements.ingredientList.reduce(function (prevSum:number, elem:IIngredient) {
                 return prevSum + elem.price;
             }, 0);
         }
@@ -38,7 +40,7 @@ function BurgerConstructor () {
             navigate('/login', {state: {from: location}});
         }
         else {
-            let order = [];
+            let order: Array<string> = [];
             if (editableElements.bun) {
                 order.push(editableElements.bun._id);
                 order.push(editableElements.bun._id);
@@ -46,7 +48,7 @@ function BurgerConstructor () {
                 alert("Для оформления заказа добавьте в заказ булку");
                 return;
             }
-            editableElements.ingredientList.map(element => element._id).forEach(item => order.push(item));
+            editableElements.ingredientList.map((element:IIngredient) => element._id).forEach(item => order.push(item));
             dispatch(getOrderNumber({ingredients: order}));
         }
     }
@@ -65,7 +67,7 @@ function BurgerConstructor () {
     const deleteItem = (itemUid) => {
         dispatch({
             type: DECREASE_ITEM_COUNT,
-            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid == itemUid)._id
+            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid === itemUid)._id
         });
         dispatch({
             type: DELETE_INGREDIENT,
@@ -76,7 +78,7 @@ function BurgerConstructor () {
     const [, dropIngredient] = useDrop({
         accept: "draggableIngredient",
         drop(itemId) {
-            const element = elements.dataContent.find(e => e._id == itemId.id);
+            const element = elements.dataContent.find(e => e._id === itemId.id);
             if(element.type === 'bun') {
                 if (editableElements.bun)
                     dispatch({
@@ -102,60 +104,64 @@ function BurgerConstructor () {
 
     const orderSum = React.useMemo(() => getSum(), [editableElements]);
 
-    return (!elements.ingredientsLoading &&
-        <section ref={dropIngredient} className={style.mainSection}>
-            {!orderNumberLoading && (
-                <Modal close={hideOrderModal}>
-                    <OrderDetails />
-                </Modal>
-            )}
-            <section className={style.fixedItem}>
-                {!editableElements.bun && (
-                    <section className={style.defaultConstructorText}>
-                        <p className="text text_type_main-large">
-                            Для сборки бургера перетащите сюда ингридиенты
-                        </p>
-                    </section>
+    if(!elements.ingredientsLoading) {
+        content = (
+            <section ref={dropIngredient} className={style.mainSection}>
+                {!orderNumberLoading && (
+                    <Modal close={hideOrderModal}>
+                        <OrderDetails />
+                    </Modal>
                 )}
-                {
-                    editableElements.bun && (
+                <section className={style.fixedItem}>
+                    {!editableElements.bun && (
+                        <section className={style.defaultConstructorText}>
+                            <p className="text text_type_main-large">
+                                Для сборки бургера перетащите сюда ингридиенты
+                            </p>
+                        </section>
+                    )}
+                    {
+                        editableElements.bun && (
+                            <ConstructorElement
+                                type="top"
+                                key={editableElements.bun._id}
+                                text={editableElements.bun.name + " (верх)"}
+                                price={editableElements.bun.price}
+                                thumbnail={editableElements.bun.image_mobile}
+                                isLocked={true}
+                            />
+                        )
+                    }
+                </section>
+                <section className={style.editableSection}>
+                    {editableElements.ingredientList.map((item,index)=>(
+                        <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
+                    ))}
+                </section>
+                <section className={style.fixedItem}>
+                    {editableElements.bun && (
                         <ConstructorElement
-                            type="top"
+                            type="bottom"
                             key={editableElements.bun._id}
-                            text={editableElements.bun.name + " (верх)"}
+                            text={editableElements.bun.name + " (низ)"}
                             price={editableElements.bun.price}
                             thumbnail={editableElements.bun.image_mobile}
                             isLocked={true}
                         />
-                    )
-                }
-            </section>
-            <section className={style.editableSection}>
-                {editableElements.ingredientList.map((item,index)=>(
-                    <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
-                ))}
-            </section>
-            <section className={style.fixedItem}>
-                {editableElements.bun && (
-                <ConstructorElement
-                    type="bottom"
-                    key={editableElements.bun._id}
-                    text={editableElements.bun.name + " (низ)"}
-                    price={editableElements.bun.price}
-                    thumbnail={editableElements.bun.image_mobile}
-                    isLocked={true}
-                />
-                )}
-            </section>
-            <section className={style.orderInfo}>
-                <section className={style.orderSum}>
-                    <p className="text text_type_digits-medium">{orderSum}</p>
-                    <CurrencyIcon type="primary" />
+                    )}
                 </section>
-                <Button type="primary" size="medium" onClick={showOrderModal}>Оформить заказ</Button>
+                <section className={style.orderInfo}>
+                    <section className={style.orderSum}>
+                        <p className="text text_type_digits-medium">{orderSum}</p>
+                        <CurrencyIcon type="primary" />
+                    </section>
+                    <Button type="primary" size="medium" onClick={showOrderModal}>Оформить заказ</Button>
+                </section>
             </section>
-        </section>
-    );
+        )
+    }
+
+    return content;
 }
 
 export default BurgerConstructor;

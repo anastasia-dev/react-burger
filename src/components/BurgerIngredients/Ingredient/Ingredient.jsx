@@ -2,11 +2,11 @@ import React from "react";
 import style from './Ingredient.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import {IngridientPropType} from "../../../types/Ingredients";
+import {IngredientPropType} from "../../../types/Ingredients";
 import {useDrag} from "react-dnd";
 
 Ingredient.propTypes = {
-    item: IngridientPropType.isRequired,
+    item: IngredientPropType.isRequired,
     class: PropTypes.string.isRequired,
     onClick: PropTypes.func
 }

@@ -1,9 +1,13 @@
 import React from "react";
 import style from "./Profile.module.css";
 import {ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
-function Profile({location}) {
+ export type ProfileProps = {
+    location:  string;
+}
+
+function Profile({location} : ProfileProps) {
 
     return (
         <section className={style.profile}>

@@ -1,12 +1,8 @@
 import React from "react";
 import style from './ModalOverlay.module.css';
-import PropTypes from "prop-types";
+import {IModal} from "../../interfaces/IModal";
 
-ModalOverlay.propTypes = {
-    close: PropTypes.func.isRequired
-};
-
-function ModalOverlay (props) {
+function ModalOverlay (props:IModal) {
     return (
         <div className={style.overlayBox} onClick={props.close}></div>
     );
