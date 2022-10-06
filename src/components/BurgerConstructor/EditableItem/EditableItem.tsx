@@ -1,16 +1,17 @@
 import style from "../BurgerConstructor.module.css";
 import React, {useRef} from "react";
-import {useDrag, useDrop} from "react-dnd";
-import PropTypes from "prop-types";
+import {useDrag, useDrop, XYCoord} from "react-dnd";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IngredientPropType} from "../../../types/Ingredients";
 import {useDispatch, useSelector} from "react-redux";
 import {SWAP_INGREDIENTS} from "../../../services/actions/constructor";
+import {IEditItem} from "../../../interfaces/IEditItem";
+import {IEditIngredient} from "../../../interfaces/IIngredient";
+import {IEditDragItem} from "../../../interfaces/IEditDragItem";
 
-const EditableItem = (props) => {
-    const ingredientList = useSelector(state => state.editableIngredients.ingredientList);
-    const itemUid = props.item.uid;
-    const ref = useRef(null);
+const EditableItem = (props: IEditItem) => {
+    const ingredientList = useSelector((state: any) => state.editableIngredients.ingredientList);
+    const itemUid: string = props.item.uid;
+    const ref = useRef<HTMLDivElement | any>(null);
     const dispatch = useDispatch();
 
     const [{isDragging}, drag] = useDrag({
@@ -23,20 +24,20 @@ const EditableItem = (props) => {
 
     const [, drop] = useDrop({
         accept: 'editableItem',
-        hover(item, monitor) {
-            if (!item.ref.current) {
+        hover(dragObject : IEditDragItem, monitor) {
+            if (!dragObject.ref.current) {
                 return
             }
-            const dragIndex = ingredientList.findIndex(a => a.uid === item.itemUid);
-            const hoverIndex = ingredientList.findIndex(a => a.uid === itemUid);
+            const dragIndex = ingredientList.findIndex((a : IEditIngredient)  => a.uid === dragObject.itemUid);
+            const hoverIndex = ingredientList.findIndex((a : IEditIngredient) => a.uid === itemUid);
             if (dragIndex === hoverIndex) {
                 return
             }
             const hoverBoundingRect = ref.current?.getBoundingClientRect()
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-            const clientOffset = monitor.getClientOffset()
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top
+            const clientOffsetY: number = monitor.getClientOffset()?.y ?? 0;
+            const hoverClientY: number = clientOffsetY - hoverBoundingRect.top
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return
             }
@@ -51,7 +52,7 @@ const EditableItem = (props) => {
         },
     })
     drag(drop(ref));
-    const opacity = isDragging ? 0.5 : 1
+    const opacity: number = isDragging ? 0.5 : 1
     return (
         <section className={style.editableItem} ref={ref} style={{opacity}}>
             <section><DragIcon type="primary" /></section>
@@ -63,11 +64,6 @@ const EditableItem = (props) => {
             />
         </section>
     )
-}
-
-EditableItem.propTypes = {
-    item: IngredientPropType.isRequired,
-    deleteItem: PropTypes.func.isRequired,
 }
 
 export default EditableItem

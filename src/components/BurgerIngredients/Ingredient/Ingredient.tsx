@@ -1,18 +1,10 @@
 import React from "react";
 import style from './Ingredient.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import {IngredientPropType} from "../../../types/Ingredients";
 import {useDrag} from "react-dnd";
+import {IProps} from "../../../interfaces/IProps";
 
-Ingredient.propTypes = {
-    item: IngredientPropType.isRequired,
-    class: PropTypes.string.isRequired,
-    onClick: PropTypes.func
-}
-
-
-function Ingredient (props) {
+function Ingredient (props: IProps)   {
     const id = props.item._id;
     const [, dragRef] = useDrag({
         type: "draggableIngredient",
@@ -20,9 +12,9 @@ function Ingredient (props) {
     });
 
     return (
-        <div className={props.class} key={props.item._id} ref={dragRef} onClick={props.funkClick}>
+        <div className={props.class} key={props.item._id} ref={dragRef} onClick={(e) => props.funkClick(props.item)}>
             {props.item.count > 0 &&
-                <Counter count={props.item.count}/>
+                <Counter count = {props.item.count} size={"default"} />
             }
             <img alt={props.item.name} src={props.item.image_large}/>
             <section className={style.ingredientCaption}>

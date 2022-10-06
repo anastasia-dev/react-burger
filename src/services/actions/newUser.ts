@@ -7,10 +7,11 @@ import {getTokens} from "../../utils/cookiesApi";
 
 import {URL_REGISTER} from "../../utils/constants";
 import {fetchAndCheckResponse} from "./usersAuth";
+import {Action, Dispatch} from "redux";
 
-export const registerNewUser = (regData, redirect) => {
+export const registerNewUser = (regData : { name: string, email: string, password: string }, redirect : () => void) => {
 
-return async function (dispatch) {
+return async function (dispatch : Dispatch<Action>) {
     dispatch({
         type: SET_REGISTER_REQUEST
     });

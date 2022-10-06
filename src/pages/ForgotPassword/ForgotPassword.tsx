@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ChangeEvent, EventHandler, FormEvent} from "react";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,8 +9,8 @@ import {forgotPassword} from "../../services/actions/usersAuth";
 
 function ForgotPassword() {
     const [form, setValue] = React.useState({ email: '' });
-    const isLogged = useSelector((store) => store.user.isLoggedIn);
-    const dispatch = useDispatch();
+    const isLogged = useSelector((store: any) => store.user.isLoggedIn);
+    const dispatch: any = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -21,13 +21,13 @@ function ForgotPassword() {
     }, [])
 
 
-    const onChange = (e) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value })
     }
 
-    const forgotPass = (e) => {
+    const forgotPass = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const redirect = () => {
+        const redirect = () : void => {
             navigate('/reset-password', {state : {from : location}});
         };
         dispatch(forgotPassword({ email: form.email }, redirect));

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ChangeEvent, FormEvent} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import style from "./Login.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
@@ -7,25 +7,25 @@ import {Link, useNavigate, useLocation} from "react-router-dom";
 import {login} from "../../services/actions/usersAuth";
 
 function Login() {
-    const dispatch = useDispatch();
+    const dispatch : any = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+    const location : any = useLocation();
 
-    const fromPage = location.state?.from?.pathname || '/';
-    const {email, password} = useSelector((store) => store.user);
+    const fromPage : string = location.state?.from?.pathname ?? '/';
+    const {email, password} = useSelector((store: any) => store.user);
 
-    const redirect = (isRedirect) => {
-        if(isRedirect) {
+    const redirect = (isRedirect: boolean) => {
+        if (isRedirect) {
             navigate(fromPage);
         }
     };
 
-    const [form, setValue] = React.useState({ email: email ?? '' , password : password ?? '' })
-    const onChange = (e) => {
+    const [form, setValue] = React.useState({ email : email ?? '' , password : password ?? '' })
+    const onChange = (e : ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value })
     }
 
-    const onLogin = (e) => {
+    const onLogin = (e : FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(login({ email: form.email, password: form.password }, redirect));
     }

@@ -19,6 +19,7 @@ import {
 import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA} from "../../utils/constants";
 import {deleteCookie, getCookie, getTokens} from "../../utils/cookiesApi";
 import {useNavigate} from "react-router-dom";
+import {Action, Dispatch} from "redux";
 
 function setForgotPassFailed() {
     return {
@@ -26,8 +27,8 @@ function setForgotPassFailed() {
     }
 }
 
-export const forgotPassword = ({ email }, redirect) => {
-    return async function (dispatch) {
+export const forgotPassword = (user: { email:string }, redirect: () => void) => {
+    return async function (dispatch: Dispatch<Action>) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -41,7 +42,7 @@ export const forgotPassword = ({ email }, redirect) => {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({ email: user.email })
         })
             .then(res => {
                 if (res && res.success) {
@@ -59,13 +60,13 @@ export const forgotPassword = ({ email }, redirect) => {
 
 };
 
-export const resetPassword = ({ token, password }, redirect) => {
-    return async function (dispatch) {
+export const resetPassword = (user: { token: string, password: string }, redirect: () => void) => {
+    return async function (dispatch: Dispatch<Action>) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
         await fetchAndCheckResponse(URL_PWD_RESET_DONE, {
-            body: JSON.stringify({ token, password }),
+            body: JSON.stringify({ token: user.token, password: user.password }),
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -89,8 +90,8 @@ export const resetPassword = ({ token, password }, redirect) => {
 
 };
 
-export const login = ({email, password}, redirect) => {
-    return function (dispatch) {
+export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) => {
+    return function (dispatch: Dispatch<Action>) {
         fetchAndCheckResponse(URL_LOGIN, {
             method: 'POST',
             mode: 'cors',
@@ -101,7 +102,7 @@ export const login = ({email, password}, redirect) => {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({email: user.email, password: user.password})
         }).then((res) => {
                 getTokens(res);
                 if (res && res.success) {
@@ -130,11 +131,11 @@ export const login = ({email, password}, redirect) => {
     };
 };
 
-export const logout = (redirect) => {
+export const logout = (redirect: () => void) => {
     if (!localStorage.refreshToken) {
         redirect()
     }
-    return function (dispatch) {
+    return function (dispatch: Dispatch<Action>) {
         dispatch({
             type: SET_LOGOUT_REQUEST
         });
@@ -174,7 +175,7 @@ export const logout = (redirect) => {
 
 
 export const refreshAuthToken = () => {
-    return async function (dispatch) {
+    return async function (dispatch: Dispatch<Action>) {
         dispatch({
             type: SET_TOKEN_REQUEST,
             user: {}
@@ -223,7 +224,7 @@ export const refreshAuthToken = () => {
 };
 
 export const getUser = () => {
-    return function (dispatch) {
+    return function (dispatch: Dispatch<Action>) {
         dispatch({
             type: SET_USER_REQUEST,
             user: {}
@@ -256,8 +257,8 @@ export const getUser = () => {
     }
 }
 
-export const updateUser = ({name, email}) => {
-    return function (dispatch) {
+export const updateUser = (user : {name: string, email: string}) => {
+    return function (dispatch: Dispatch<any>) {
         dispatch({
             type: SET_USER_UPDATE_REQUEST,
             user: {}
@@ -273,7 +274,7 @@ export const updateUser = ({name, email}) => {
             },
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
-            body: JSON.stringify({ user : { name: name, email: email }})
+            body: JSON.stringify({ user : { name: user.name, email: user.email }})
         }).then((res) => {
                 if (res && res.success) {
                     dispatch({
@@ -290,7 +291,7 @@ export const updateUser = ({name, email}) => {
             .catch((e) => {
                 if ((e.message === 'jwt expired') || (e.message === 'Token is invalid')) {
                     refreshAuthToken();
-                    dispatch(updateUser({name,email}));
+                    dispatch(updateUser({name: user.name, email: user.email}));
                 } else dispatch({
                     type: SET_USER_UPDATE_FAILED,
                     user: {}
@@ -299,7 +300,7 @@ export const updateUser = ({name, email}) => {
     };
 };
 
-export const fetchAndCheckResponse = (url, options) => {
+export const fetchAndCheckResponse = (url: string, options: any) => {
     return fetch(url, options).then(checkApiResponse);
 }
 

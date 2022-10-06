@@ -12,7 +12,7 @@ import {useDrop} from 'react-dnd';
 import EditableItem from "./EditableItem/EditableItem";
 import {isAuthorized} from "../../services/actions/usersAuth";
 import {useLocation, useNavigate} from "react-router-dom";
-import {IIngredient} from "../../interfaces/IIngredient";
+import {IEditIngredient, IIngredient} from "../../interfaces/IIngredient";
 
 function BurgerConstructor () {
     const elements  = useSelector((state: any) => state.ingredients);
@@ -20,13 +20,13 @@ function BurgerConstructor () {
     const orderNumberLoading = useSelector((state: any)  => state.orderNumber.orderNumberLoading);
     const navigate = useNavigate();
     const location = useLocation();
-    const dispatch = useDispatch();
+    const dispatch: any = useDispatch();
     let content: ReactElement = (<></>);
 
-    const getSum = () => {
+    const getSum = () : number => {
         let sum: number = 0;
         if(editableElements.ingredientList) {
-            sum += editableElements.ingredientList.reduce(function (prevSum:number, elem:IIngredient) {
+            sum += editableElements.ingredientList.reduce(function (prevSum:number, elem:IIngredient) : number {
                 return prevSum + elem.price;
             }, 0);
         }
@@ -35,7 +35,7 @@ function BurgerConstructor () {
         return sum;
     }
 
-    const showOrderModal = () => {
+    const showOrderModal = () : void => {
         if (!isAuthorized()) {
             navigate('/login', {state: {from: location}});
         }
@@ -48,12 +48,12 @@ function BurgerConstructor () {
                 alert("Для оформления заказа добавьте в заказ булку");
                 return;
             }
-            editableElements.ingredientList.map((element:IIngredient) => element._id).forEach(item => order.push(item));
+            editableElements.ingredientList.forEach((item:IIngredient) => order.push(item._id));
             dispatch(getOrderNumber({ingredients: order}));
         }
     }
 
-    const hideOrderModal = () => {
+    const hideOrderModal = () : void => {
         dispatch({
             type: CLEAR_ORDER_NUMBER
         });
@@ -64,10 +64,10 @@ function BurgerConstructor () {
             type: CLEAR_CONSTRUCTOR_DATA
         });
     }
-    const deleteItem = (itemUid) => {
+    const deleteItem = (itemUid : string): void => {
         dispatch({
             type: DECREASE_ITEM_COUNT,
-            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid === itemUid)._id
+            itemId: editableElements.ingredientList.find((ingredient : IEditIngredient) => ingredient.uid === itemUid)._id
         });
         dispatch({
             type: DELETE_INGREDIENT,
@@ -77,8 +77,8 @@ function BurgerConstructor () {
 
     const [, dropIngredient] = useDrop({
         accept: "draggableIngredient",
-        drop(itemId) {
-            const element = elements.dataContent.find(e => e._id === itemId.id);
+        drop(itemId : any) {
+            const element = elements.dataContent.find((e : IIngredient) => e._id === itemId.id);
             if(element.type === 'bun') {
                 if (editableElements.bun)
                     dispatch({
@@ -134,7 +134,7 @@ function BurgerConstructor () {
                     }
                 </section>
                 <section className={style.editableSection}>
-                    {editableElements.ingredientList.map((item,index)=>(
+                    {editableElements.ingredientList.map((item : IEditIngredient)=>(
                         <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
                     ))}
                 </section>
@@ -155,6 +155,7 @@ function BurgerConstructor () {
                         <p className="text text_type_digits-medium">{orderSum}</p>
                         <CurrencyIcon type="primary" />
                     </section>
+                    {/* исправила тип Button в Button.d.ts, это предложено куратором в чате как решение проблемы типа для <Button> */}
                     <Button type="primary" size="medium" onClick={showOrderModal}>Оформить заказ</Button>
                 </section>
             </section>

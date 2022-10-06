@@ -7,7 +7,7 @@ import {IModal} from "../../interfaces/IModal";
 
 const modalRoot = document.getElementById("modal-root");
 
-function Modal (props:IModal) {
+function Modal (props: IModal) {
     const pressEsc = React.useCallback((e: any) => {
         if (e.key === 'Escape') {
             props.close();

@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import {isAuthorized} from "../../services/actions/usersAuth";
 import {IProtect} from "../../interfaces/IProtect";
 
-export const ProtectedFromUnauthorizedRoute = ({ children }:IProtect) => {
+export const ProtectedFromUnauthorizedRoute = ({ children }: IProtect) => {
     const navigate = useNavigate();
     const location = useLocation();
 

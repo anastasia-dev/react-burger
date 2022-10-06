@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {ChangeEvent, FormEvent, useEffect} from "react";
 import {useDispatch} from "react-redux";
 import style from "./ResetPassword.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
@@ -7,14 +7,14 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {resetPassword} from "../../services/actions/usersAuth";
 
 function ResetPassword() {
-    const dispatch = useDispatch();
+    const dispatch : any = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+    const location : any = useLocation();
     const [form, setValue] = React.useState({ token: '', password: '' });
-    const onChange = (e) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value })
     }
-    const fromPage = location.state?.from?.pathname || '/';
+    const fromPage = location.state?.from?.pathname ?? '/';
 
     useEffect(() => {
         if (fromPage !== '/forgot-password') {
@@ -26,7 +26,7 @@ function ResetPassword() {
         navigate('/')
     };
 
-    const onReset = (e) => {
+    const onReset = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(resetPassword(form, redirect));
     };

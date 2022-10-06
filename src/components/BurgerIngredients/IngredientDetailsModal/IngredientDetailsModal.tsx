@@ -5,7 +5,7 @@ import Modal from "../../Modal/Modal";
 
 function IngredientDetailsModal () {
     const navigate = useNavigate();
-    const closeModal = e => {
+    const closeModal = () : void => {
         navigate(-1);
     };
 

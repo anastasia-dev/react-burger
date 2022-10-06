@@ -5,12 +5,14 @@ import {
 } from "./orderNumber";
 import {URL_ORDERS} from "../../utils/constants";
 import {checkApiResponse} from "../../utils/apiCheck";
+import {Dispatch} from "react";
+import {AnyAction} from "redux";
 
 
 const requestNumber = URL_ORDERS;
 
-export function getOrderNumber(post) {
-    return function (dispatch) {
+export const getOrderNumber = (post : any) => {
+    return function (dispatch : Dispatch<AnyAction>) {
         dispatch({
             type: SHOW_ORDER_NUMBER_REQUEST,
         });

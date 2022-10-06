@@ -11,4 +11,9 @@ export interface IIngredient {
     image_mobile: string,
     image_large: string,
     __v: number;
+    count: number;
+}
+
+export interface IEditIngredient extends IIngredient {
+    uid: string;
 }

@@ -3,10 +3,7 @@ import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './Tabs.module.css'
 import {useSelector} from "react-redux";
 
-type TabsType  = ReturnType<typeof Tab> & {
-    children?: string;
-}
-
+/* исправила тип Tab в tab.d.ts, это предложено куратором в чате как решение проблемы типа для <Tab> */
 function Tabs () {
     const current = useSelector((state: any) => state.activeTab.activeTab)
     return (

@@ -2,11 +2,7 @@ import React from "react";
 import style from "./Menu.module.css";
 import {BurgerIcon, ListIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
-
-interface IMenu {
-    text: string,
-    location: string
-}
+import {IMenu} from "../../../interfaces/IMenu";
 
 function Menu(props: IMenu) {
     let current: boolean = false;

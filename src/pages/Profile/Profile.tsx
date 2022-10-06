@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {ChangeEvent, FormEvent, useEffect} from "react";
 import style from "./Profile.module.css";
 import {NavLink, useNavigate} from "react-router-dom";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,13 +7,13 @@ import {getUser, logout, updateUser} from "../../services/actions/usersAuth";
 
 
 function Profile() {
-    const dispatch = useDispatch();
+    const dispatch: any = useDispatch();
     const navigate = useNavigate();
     const redirect = () => {navigate('/login')};
-    const user = useSelector((store) => store.user);
+    const user = useSelector((store: any) => store.user);
     const [form, setValue] = React.useState({ email: user.email ?? '' , password : user.password ?? '', name: user.name ?? '' })
 
-    const onChange = (e) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     }
 
@@ -26,23 +26,19 @@ function Profile() {
         }, []
     );
 
-    const onLogout = (e) => {
+    const onLogout = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         dispatch(logout(redirect));
     }
 
-    const onCancelUpdate = (e) => {
-        console.log('cansel');
+    const onCancelUpdate = (e: React.SyntheticEvent<Element, Event>) => {
         e.preventDefault();
         setValue({ email: user.email, name: user.name, password: '' });
-        console.log('works');
     }
 
-    const onUpdateUser = (e) => {
-        console.log('update request');
+    const onUpdateUser = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(updateUser({email: form.email, name:form.name}));
-        console.log('works too');
     }
 
     return (

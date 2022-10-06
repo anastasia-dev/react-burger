@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ChangeEvent, FormEvent} from "react";
 import {useDispatch} from "react-redux";
 import style from "./Register.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
@@ -9,18 +9,17 @@ import {registerNewUser} from "../../services/actions/newUser";
 
 
 function Register() {
-    const dispatch = useDispatch();
+    const dispatch: any = useDispatch();
 
-    const [form, setValue] =React.useState({ name: '', email: '', password: '' });
+    const [form, setValue] = React.useState({ name: '', email: '', password: '' });
     const navigate = useNavigate();
-    const onChange = (e) => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     }
-    const redirect = () => {
-
+    const redirect = () : void => {
         navigate('/')
     };
-    function newRegister(e) {
+    function newRegister(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         dispatch(registerNewUser(form, redirect));
     }

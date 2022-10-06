@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import {ingredientsReducer} from "./burgerIngredientsReducer"
-import {activeTabReducer} from "../reducers/activeTabReducer";
+import {activeTabReducer} from "./activeTabReducer";
 import {burgerConstructorReducer} from "./burgerConstructorReducer";
 import {orderNumberReducer} from "./odrerNumberReducer";
 import {userReducer} from "./userReducer";
