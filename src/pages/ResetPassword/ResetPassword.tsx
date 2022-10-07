@@ -5,11 +5,12 @@ import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {resetPassword} from "../../services/actions/usersAuth";
+import {ILocation} from "../../interfaces/ILocation";
 
 function ResetPassword() {
     const dispatch : any = useDispatch();
     const navigate = useNavigate();
-    const location : any = useLocation();
+    const location = useLocation() as ILocation;
     const [form, setValue] = React.useState({ token: '', password: '' });
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value })

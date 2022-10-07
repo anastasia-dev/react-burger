@@ -2,7 +2,14 @@ import React from "react";
 import style from './Ingredient.module.css'
 import {Counter, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useDrag} from "react-dnd";
-import {IProps} from "../../../interfaces/IProps";
+import {IIngredient} from "../../../interfaces/IIngredient";
+
+interface IProps {
+    funkClick: (showItemDetails: IIngredient) => void;
+    item: IIngredient;
+    class?: string;
+    count?: number;
+}
 
 function Ingredient (props: IProps)   {
     const id = props.item._id;

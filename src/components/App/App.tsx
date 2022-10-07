@@ -1,4 +1,4 @@
-import React, {Dispatch} from 'react';
+import React from 'react';
 import style from "./App.module.css";
 import {Routes, Route, useLocation } from "react-router-dom";
 import AppHeader from "../AppHeader/AppHeader";
@@ -78,6 +78,12 @@ function App () {
             )}
         </div>
       );
+}
+
+declare module 'react' {
+    interface FunctionComponent<P = {}> {
+        (props: PropsWithChildren<P>, context?: any): ReactElement<any, any> | null;
+    }
 }
 
 export default App;

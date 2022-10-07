@@ -4,11 +4,11 @@ import Menu from "./Menu/Menu";
 import Logo from "./Logo/Logo";
 import Profile from "./Profile/Profile";
 import {useLocation} from "react-router-dom";
+import {ILocation} from "../../interfaces/ILocation";
 
 function AppHeader () {
 
-    const location = useLocation();
-
+    const location = useLocation() as ILocation;
     return (
         <header className={style.MainHeader}>
             <section className={style.MainContainer}>
@@ -17,7 +17,7 @@ function AppHeader () {
                     <Menu text="Лента заказов" location={location.pathname} />
                 </section>
                 <Logo />
-                <Profile location={location.pathname as string} />
+                <Profile location={location.pathname} />
             </section>
         </header>
     );

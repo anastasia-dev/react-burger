@@ -13,13 +13,14 @@ import EditableItem from "./EditableItem/EditableItem";
 import {isAuthorized} from "../../services/actions/usersAuth";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IEditIngredient, IIngredient} from "../../interfaces/IIngredient";
+import {ILocation} from "../../interfaces/ILocation";
 
 function BurgerConstructor () {
     const elements  = useSelector((state: any) => state.ingredients);
     const editableElements = useSelector((state: any)  => state.editableIngredients);
     const orderNumberLoading = useSelector((state: any)  => state.orderNumber.orderNumberLoading);
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation() as ILocation;
     const dispatch: any = useDispatch();
     let content: ReactElement = (<></>);
 
@@ -155,7 +156,6 @@ function BurgerConstructor () {
                         <p className="text text_type_digits-medium">{orderSum}</p>
                         <CurrencyIcon type="primary" />
                     </section>
-                    {/* исправила тип Button в Button.d.ts, это предложено куратором в чате как решение проблемы типа для <Button> */}
                     <Button type="primary" size="medium" onClick={showOrderModal}>Оформить заказ</Button>
                 </section>
             </section>

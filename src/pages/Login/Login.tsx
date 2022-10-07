@@ -5,13 +5,14 @@ import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import {login} from "../../services/actions/usersAuth";
+import {ILocation} from "../../interfaces/ILocation";
 
 function Login() {
     const dispatch : any = useDispatch();
     const navigate = useNavigate();
-    const location : any = useLocation();
+    const location  = useLocation() as ILocation;
 
-    const fromPage : string = location.state?.from?.pathname ?? '/';
+    const fromPage = location.state?.from?.pathname ?? '/';
     const {email, password} = useSelector((store: any) => store.user);
 
     const redirect = (isRedirect: boolean) => {

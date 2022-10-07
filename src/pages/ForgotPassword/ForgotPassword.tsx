@@ -5,6 +5,7 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 import style from "./ForgotPassword.module.css";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {forgotPassword} from "../../services/actions/usersAuth";
+import {ILocation} from "../../interfaces/ILocation";
 
 
 function ForgotPassword() {
@@ -12,7 +13,7 @@ function ForgotPassword() {
     const isLogged = useSelector((store: any) => store.user.isLoggedIn);
     const dispatch: any = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation() as ILocation;
 
     useEffect(() => {
         if (isLogged) {

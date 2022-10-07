@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IIngredient} from "../../interfaces/IIngredient";
+import {ILocation} from "../../interfaces/ILocation";
 
 function BurgerIngredients () {
     const ingredients  = useSelector((state: any) => state.ingredients);
@@ -16,7 +17,7 @@ function BurgerIngredients () {
     const refSauces = React.useRef<HTMLDivElement | any>(null);
     const refMains = React.useRef<HTMLDivElement | any>(null);
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation() as ILocation;
 
     const showItemDetails = (elem:IIngredient) => {
         navigate(`/ingredients/${elem._id}`, {state: { background: location }});
