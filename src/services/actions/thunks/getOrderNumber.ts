@@ -5,14 +5,14 @@ import {
 } from "../orderNumber";
 import {URL_ORDERS} from "../../../utils/constants";
 import {checkApiResponse} from "../../../utils/apiCheck";
-import { AppDispatch } from "../../types";
+import {AppDispatch, AppThunk} from "../../types";
 import { getCookie } from "../../../utils/cookiesApi";
 
 
 const requestNumber = URL_ORDERS;
 
-export const getOrderNumber = (order : { ingredients: Array<string> }) => {
-    return function (dispatch : AppDispatch) {
+export const getOrderNumber = (order : { ingredients: Array<string> }) : AppThunk => {
+    return function (dispatch) {
         dispatch({
             type: SHOW_ORDER_NUMBER_REQUEST,
         });

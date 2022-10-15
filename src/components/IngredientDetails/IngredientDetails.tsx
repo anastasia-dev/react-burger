@@ -8,7 +8,7 @@ import { useAppSelector } from "../../services/hooks";
 function IngredientDetails () {
     const { id } = useParams();
     const items = useAppSelector(store => store.ingredients);
-    const data = items.dataContent?.find((elem: IIngredient) => elem._id === id);
+    const data = items.dataContent?.find(elem => elem._id === id);
 
     if (data) {
         return (<div className={style.ingredientBox}>

@@ -27,7 +27,7 @@ function BurgerConstructor () {
     const getSum = () : number => {
         let sum: number = 0;
         if(editableElements.ingredientList) {
-            sum += editableElements.ingredientList.reduce(function (prevSum:number, elem:IIngredient) : number {
+            sum += editableElements.ingredientList.reduce((prevSum, elem) => {
                 return prevSum + elem.price;
             }, 0);
         }
@@ -68,7 +68,7 @@ function BurgerConstructor () {
     const deleteItem = (itemUid : string): void => {
         dispatch({
             type: DECREASE_ITEM_COUNT,
-            itemId: editableElements.ingredientList.find((ingredient : IEditIngredient) => ingredient.uid === itemUid)?._id ?? ""
+            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid === itemUid)?._id ?? ""
         });
         dispatch({
             type: DELETE_INGREDIENT,
@@ -79,7 +79,7 @@ function BurgerConstructor () {
     const [, dropIngredient] = useDrop({
         accept: "draggableIngredient",
         drop(itemId : any) {
-            const element = elements.dataContent?.find((e : IIngredient) => e._id === itemId.id);
+            const element = elements.dataContent?.find(e => e._id === itemId.id);
             if(element?.type === 'bun') {
                 if (editableElements.bun)
                     dispatch({
@@ -135,7 +135,7 @@ function BurgerConstructor () {
                     }
                 </section>
                 <section className={style.editableSection}>
-                    {editableElements.ingredientList.map((item : IEditIngredient)=>(
+                    {editableElements.ingredientList.map(item =>(
                         <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
                     ))}
                 </section>

@@ -66,19 +66,19 @@ function BurgerIngredients () {
                 <section className={style.ingredientsName} ref={refBuns}>
                     <p className="text text_type_main-medium">Булки</p>
                 </section>
-                {ingredients.dataContent?.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map(elem => (
                     elem.type === 'bun' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
                 <section className={style.ingredientsName} ref={refSauces}>
                     <p className="text text_type_main-medium">Соусы</p>
                 </section>
-                {ingredients.dataContent?.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map(elem => (
                     elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
                 <section className={style.ingredientsName} ref={refMains}>
                     <p className="text text_type_main-medium">Начинки</p>
                 </section>
-                {ingredients.dataContent?.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map(elem => (
                     elem.type === 'main' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
             </section>

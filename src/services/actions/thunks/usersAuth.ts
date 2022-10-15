@@ -20,6 +20,7 @@ import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA}
 import {deleteCookie, getCookie, getTokens} from "../../../utils/cookiesApi";
 import {useNavigate} from "react-router-dom";
 import {Action, Dispatch} from "redux";
+import {AppDispatch, AppThunk} from "../../types";
 
 function setForgotPassFailed() {
     return {
@@ -27,8 +28,8 @@ function setForgotPassFailed() {
     }
 }
 
-export const forgotPassword = (user: { email:string }, redirect: () => void) => {
-    return async function (dispatch: Dispatch<Action>) {
+export const forgotPassword = (user: { email:string }, redirect: () => void) : AppThunk => {
+    return async function (dispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -60,8 +61,8 @@ export const forgotPassword = (user: { email:string }, redirect: () => void) => 
 
 };
 
-export const resetPassword = (user: { token: string, password: string }, redirect: () => void) => {
-    return async function (dispatch: Dispatch<Action>) {
+export const resetPassword = (user: { token: string, password: string }, redirect: () => void) : AppThunk => {
+    return async function (dispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -90,8 +91,8 @@ export const resetPassword = (user: { token: string, password: string }, redirec
 
 };
 
-export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) => {
-    return function (dispatch: Dispatch<Action>) {
+export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) : AppThunk => {
+    return function (dispatch) {
         fetchAndCheckResponse(URL_LOGIN, {
             method: 'POST',
             mode: 'cors',
@@ -131,11 +132,11 @@ export const login = (user: {email: string, password: string}, redirect: (isRedi
     };
 };
 
-export const logout = (redirect: () => void) => {
+export const logout = (redirect: () => void): AppThunk => {
     if (!localStorage.refreshToken) {
         redirect()
     }
-    return function (dispatch: Dispatch<Action>) {
+    return function (dispatch) {
         dispatch({
             type: SET_LOGOUT_REQUEST
         });
@@ -174,8 +175,8 @@ export const logout = (redirect: () => void) => {
 };
 
 
-export const refreshAuthToken = () => {
-    return async function (dispatch: Dispatch<Action>) {
+export const refreshAuthToken = (): AppThunk => {
+    return async function (dispatch) {
         dispatch({
             type: SET_TOKEN_REQUEST,
             user: {}
@@ -222,8 +223,8 @@ export const refreshAuthToken = () => {
     };
 };
 
-export const getUser = () => {
-    return function (dispatch: Dispatch<Action>) {
+export const getUser = () : AppThunk => {
+    return function (dispatch) {
         dispatch({
             type: SET_USER_REQUEST,
             user: {}
@@ -256,8 +257,8 @@ export const getUser = () => {
     }
 }
 
-export const updateUser = (user : {name: string, email: string}) => {
-    return function (dispatch: Dispatch<any>) {
+export const updateUser = (user : {name: string, email: string}) : AppThunk => {
+    return function (dispatch) {
         dispatch({
             type: SET_USER_UPDATE_REQUEST,
             user: {}

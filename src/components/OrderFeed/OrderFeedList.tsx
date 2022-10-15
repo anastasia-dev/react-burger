@@ -11,7 +11,7 @@ interface IOrderFeedListProps {
 function OrderFeedList(props : IOrderFeedListProps) {
     return (
         <section>
-            { props.orders?.map((elem: IOrderFeedItem) => <OrderFeedListItem item={elem} key={elem._id} showStatus={props.showStatus} modalUrl={props.modalUrl}/>) }
+            { props.orders?.map(elem => <OrderFeedListItem item={elem} key={elem._id} showStatus={props.showStatus} modalUrl={props.modalUrl}/>) }
         </section>
     )
 }

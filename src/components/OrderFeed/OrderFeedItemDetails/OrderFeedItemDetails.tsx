@@ -64,9 +64,9 @@ function OrderFeedItemDetails(props : IOrderFeedItemDetailsProps) {
                 </section>
                 <section className={style.elementsInfo}>
                     <section className={style.elementsList}>
-                        {filtered?.map((details : DetailsIngredients, idx : number) => {
+                        {filtered?.map((details, idx) => {
                             return (
-                                <section className={style.orderLine} key={details?.item._id + idx.toString()}>
+                                <section className={style.orderLine} key={details.item._id}>
                                     <section className={style.leftPart}>
                                         <div className={style.icon}><img src={details?.item.image_large} alt={details?.item.name}/></div>
                                         <div className={style.name}><p>{details?.item.name}</p></div>
