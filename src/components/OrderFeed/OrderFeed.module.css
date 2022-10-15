@@ -1,0 +1,158 @@
+.ordersFeedBlock {
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    flex-wrap: wrap;
+    margin: auto;
+    overflow: hidden;
+}
+
+.leftColumnBlock {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    overflow-y: scroll;
+}
+
+.feedListItemBlock {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-top: 16px;
+    padding: 24px;
+    align-items: flex-start;
+    text-decoration: none;
+    color: white;
+    background: #1C1C21;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.4), 0px 0px 2px rgba(0,0,0,0.6), 0px 0px 1px rgba(0,0,0,0.4);
+    border-radius: 40px;
+}
+
+.topBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 12px 0 12px 0;
+}
+
+.nameBlock {
+    text-align: left;
+}
+
+.statusLeftBlock {
+    margin: 10px 0 10px 0;
+    color:  rgb(0, 204, 204);
+}
+
+.rightColumnBlock {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.currentStatuses {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.statusBlock {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 60px;
+    width: 100%;
+}
+
+.totalBlock {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.textColor {
+    color: rgb(0, 204, 204);
+}
+
+.ordersProcessNumbers {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 47%;
+}
+
+.ordersProcessNumberItem {
+    align-self: flex-start; 
+}
+
+.price {
+    display: flex;
+    justify-content: right;
+}
+.date {
+    color: rgb(133, 133, 173);
+}
+
+.orderFeedIcon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 100px;
+    position: relative;
+    border: 3px solid rgba(76,	76,	255, 1);
+    background: #131316;
+}
+
+
+.icon:not(:first-child) {
+    margin-left: -20px;
+}
+
+.icon img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.iconsBlock {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
+p.lastIcon {
+    flex-direction: row;
+    margin: 0 0 0 -25px;
+}
+
+.lastIcon  img {
+    opacity: 0.5;
+}
+
+.lastIcon  span {
+    margin-left: -45px;
+}
+
+.totalHack {
+    margin-top: -110px;
+}
+
+.orderFeedProfile {
+    margin-top: -100px;
+    padding: 0 10px 0 10px;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.orderFeedProfile .feedListItemBlock:first-child {
+    margin-top: 0;
+}

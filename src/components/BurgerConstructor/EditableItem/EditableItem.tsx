@@ -1,18 +1,18 @@
 import style from "../BurgerConstructor.module.css";
 import React, {useRef} from "react";
-import {useDrag, useDrop, XYCoord} from "react-dnd";
+import {useDrag, useDrop } from "react-dnd";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
 import {SWAP_INGREDIENTS} from "../../../services/actions/constructor";
 import {IEditItem} from "../../../interfaces/IEditItem";
 import {IEditIngredient} from "../../../interfaces/IIngredient";
 import {IEditDragItem} from "../../../interfaces/IEditDragItem";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
 
 const EditableItem = (props: IEditItem) => {
-    const ingredientList = useSelector((state: any) => state.editableIngredients.ingredientList);
+    const ingredientList = useAppSelector(state => state.editableIngredients.ingredientList);
     const itemUid: string = props.item.uid;
     const ref = useRef<HTMLDivElement | any>(null);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [{isDragging}, drag] = useDrag({
         type: 'editableItem',

@@ -10,4 +10,7 @@ export const URL_REGISTER = URL_API_AUTH + 'register';
 export const URL_LOGOUT = URL_API_AUTH + 'logout';
 export const URL_TOKEN = URL_API_AUTH + 'token';
 export const URL_USER_DATA = URL_API_AUTH + 'user';
+//export const URL_ORDER_FEED = URL_API_AUTH + 'user';
+export const URL_ORDER_FEED = "wss://norma.nomoreparties.space/orders/all";
+export const URL_USER_ORDER_FEED = "wss://norma.nomoreparties.space/orders";
 

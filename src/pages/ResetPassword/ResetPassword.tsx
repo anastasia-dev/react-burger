@@ -1,14 +1,14 @@
 import React, {ChangeEvent, FormEvent, useEffect} from "react";
-import {useDispatch} from "react-redux";
 import style from "./ResetPassword.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {resetPassword} from "../../services/actions/usersAuth";
+import {resetPassword} from "../../services/actions/thunks/usersAuth";
 import {ILocation} from "../../interfaces/ILocation";
+import { useAppDispatch } from "../../services/hooks";
 
 function ResetPassword() {
-    const dispatch : any = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation() as ILocation;
     const [form, setValue] = React.useState({ token: '', password: '' });

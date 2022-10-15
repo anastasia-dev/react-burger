@@ -22,13 +22,44 @@ import {
     SET_USER_REQUEST,
     SET_USER_UPDATE_FAILED,
     SET_USER_UPDATE_REQUEST,
-    SET_USER_UPDATE_SUCCESS
+    SET_USER_UPDATE_SUCCESS,
+    UserActions
 } from "../actions/userRegistration";
 
-const userInitialState = {
+type UserState = {
+    name: string,
+    email: string,
+    isLoggedIn : boolean,
+
+    registerRequest : boolean,
+    registerFailed : boolean,
+
+    loginRequest : boolean,
+    loginFailed : boolean,
+
+    logoutRequest : boolean,
+    logoutFailed : boolean,
+
+    forgotRequest : boolean,
+    forgotFailed : boolean,
+
+    resetRequest : boolean,
+    resetFailed : boolean,
+
+    authRequest : boolean,
+    authFailed : boolean,
+
+    tokenRequest : boolean,
+    tokenFailed : boolean
+}
+
+const userInitialState : UserState = {
     name: '',
     email: '',
     isLoggedIn : false,
+
+    registerRequest: false,
+    registerFailed: false,
 
     loginRequest: false,
     loginFailed: false,
@@ -49,7 +80,7 @@ const userInitialState = {
     tokenFailed: false,
 }
 
-export function  userReducer (state = userInitialState, action) {
+export function userReducer(state : UserState = userInitialState, action : UserActions) : UserState {
     switch (action.type) {
         case SET_FORGOT_PASSWORD_REQUEST: {
             return { ...state, forgotRequest: true };

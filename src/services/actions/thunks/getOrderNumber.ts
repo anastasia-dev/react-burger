@@ -2,26 +2,27 @@ import {
     SHOW_ORDER_NUMBER_SUCCESS,
     SHOW_ORDER_NUMBER_ERROR,
     SHOW_ORDER_NUMBER_REQUEST
-} from "./orderNumber";
-import {URL_ORDERS} from "../../utils/constants";
-import {checkApiResponse} from "../../utils/apiCheck";
-import {Dispatch} from "react";
-import {AnyAction} from "redux";
+} from "../orderNumber";
+import {URL_ORDERS} from "../../../utils/constants";
+import {checkApiResponse} from "../../../utils/apiCheck";
+import { AppDispatch } from "../../types";
+import { getCookie } from "../../../utils/cookiesApi";
 
 
 const requestNumber = URL_ORDERS;
 
-export const getOrderNumber = (post : any) => {
-    return function (dispatch : Dispatch<AnyAction>) {
+export const getOrderNumber = (order : { ingredients: Array<string> }) => {
+    return function (dispatch : AppDispatch) {
         dispatch({
             type: SHOW_ORDER_NUMBER_REQUEST,
         });
         fetch(requestNumber, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8'
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: 'Bearer ' + getCookie('token')
             },
-            body: JSON.stringify(post)
+            body: JSON.stringify(order)
         }).then(checkApiResponse)
             .then(res => {
                     dispatch({

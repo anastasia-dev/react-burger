@@ -1,24 +1,62 @@
-import React from "react";
-import style from "../../OrderHistory/OrderHistory.module.css";
-import {Link} from "react-router-dom";
+import React, { useEffect } from "react";
+import style from "../Profile.module.css";
+import feedStyle from "../../../components/OrderFeed/OrderFeed.module.css"
+import { NavLink, useNavigate} from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../services/hooks";
+import { logout } from "../../../services/actions/thunks/usersAuth";
+import OrderFeedList from "../../../components/OrderFeed/OrderFeedList";
+//import { closeUserOrderFeedConnection, startUserOrderFeedConnection } from "../../../services/actions/thunks/orderFeed";
+import { USER_ORDER_FEED_CONNECTION_CLOSED, USER_ORDER_FEED_CONNECTION_START } from "../../../services/actions/userOrderFeed";
 
 
 function ProfileOrderHistory() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const redirect = () => {navigate('/login')};
+    const { ordersFeed }  = useAppSelector(store => store.userOrderFeed);
+
+    const onLogout = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        dispatch(logout(redirect));
+    }
+    useEffect(() => {
+        dispatch({
+            type: USER_ORDER_FEED_CONNECTION_START
+        })
+        return () => { 
+            dispatch({
+                type: USER_ORDER_FEED_CONNECTION_CLOSED
+            })
+        }
+    }, []);
     return (
         <section className={style.mainBlock}>
-            <h1>
-                <p className="text text_type_main-large">
-                    Контент уже в пути, нужно немного потерпеть...
-                </p>
-            </h1>
-            <section>
-                <p className="text text_type_main-medium">
-                    Советуем вернуться на:
-                </p>
-                <p className="text text_type_main-default">
-                    <Link to="/">Главную страницу</Link>
-                </p>
-            </section>
+            <div className={style.menu}>
+                <div className={style.menuItem}>
+                    <NavLink to='/profile' className={style.menuItemLink}>
+                        <p className="text text_type_main-medium">
+                            Профиль
+                        </p>
+                    </NavLink>
+                </div>
+                <div className={style.menuItem}>
+                    <NavLink to={'/profile/orders'} className={style.menuItemLink}>
+                        <p className="text text_type_main-medium">
+                            История заказов
+                        </p>
+                </NavLink>
+                </div>
+                <div className={style.menuItem} onClick={onLogout}>
+                    <span className={style.menuItemLink}>
+                            <p className="text text_type_main-medium">
+                                Выход
+                            </p>
+                    </span>
+                </div>
+            </div>
+            <div className={feedStyle.orderFeedProfile}>
+                <OrderFeedList orders={ordersFeed?.orders} showStatus={true} modalUrl="/profile/orders/" />
+            </div>
         </section>
     );
 }

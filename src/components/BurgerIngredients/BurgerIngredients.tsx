@@ -2,16 +2,16 @@ import React, {ReactElement} from "react";
 import Ingredient from "./Ingredient/Ingredient";
 import Tabs from "./Tabs/Tabs";
 import style from './BurgerIngredients.module.css'
-import {useDispatch, useSelector} from "react-redux";
 import {SET_ACTIVE_TAB } from "../../services/actions/activeTab";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IIngredient} from "../../interfaces/IIngredient";
 import {ILocation} from "../../interfaces/ILocation";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 function BurgerIngredients () {
-    const ingredients  = useSelector((state: any) => state.ingredients);
-    const tabs  = useSelector((state: any) => state.activeTab);
-    const dispatch = useDispatch();
+    const ingredients  = useAppSelector(state => state.ingredients);
+    const tabs  = useAppSelector(state => state.activeTab);
+    const dispatch = useAppDispatch();
     const ref = React.useRef<HTMLDivElement | any>(null);
     const refBuns = React.useRef<HTMLDivElement | any>(null);
     const refSauces = React.useRef<HTMLDivElement | any>(null);
@@ -66,19 +66,19 @@ function BurgerIngredients () {
                 <section className={style.ingredientsName} ref={refBuns}>
                     <p className="text text_type_main-medium">Булки</p>
                 </section>
-                {ingredients.dataContent.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map((elem: IIngredient) => (
                     elem.type === 'bun' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
                 <section className={style.ingredientsName} ref={refSauces}>
                     <p className="text text_type_main-medium">Соусы</p>
                 </section>
-                {ingredients.dataContent.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map((elem: IIngredient) => (
                     elem.type === 'sauce' &&  <Ingredient  class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
                 <section className={style.ingredientsName} ref={refMains}>
                     <p className="text text_type_main-medium">Начинки</p>
                 </section>
-                {ingredients.dataContent.map((elem: IIngredient) => (
+                {ingredients.dataContent?.map((elem: IIngredient) => (
                     elem.type === 'main' && <Ingredient class={style.ingredient} key={elem._id} item={elem} funkClick={() => showItemDetails(elem)} />
                 ))}
             </section>

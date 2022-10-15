@@ -1,17 +1,26 @@
 import React, {ReactElement} from "react";
 import style from './OrderDetails.module.css'
 import {CheckMarkIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useSelector} from "react-redux";
+import { useAppSelector } from "../../services/hooks";
 
 function OrderDetails () {
-    const orderState = useSelector((state:any) => state.orderNumber);
+    const orderState = useAppSelector(state => state.orderNumber);
 
     let content: ReactElement = (<></>);
+    if(orderState.orderNumberLoading) {
+        content = (
+            <div className={style.orderDetailInfo}>
+                <section className={style.orderStatusNotice}>
+                    <p className="text text_type_main-large mb-20">Заказ отправлен, минуточку...</p>
+                </section>
+            </div>
+            ); 
+    }
     if (orderState.orderNumberFailed) {
         content = (
             <div className={style.orderDetailInfo}>
                 <section className={style.orderStatusNotice}>
-                    <p className="text text_type_main-default">Ошибка получения заказа.</p>
+                    <p className="text text_type_main-large mb-20">Ошибка получения заказа.</p>
                 </section>
             </div>
             );

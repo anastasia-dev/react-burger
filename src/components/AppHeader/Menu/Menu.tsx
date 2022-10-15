@@ -6,10 +6,10 @@ import {IMenu} from "../../../interfaces/IMenu";
 
 function Menu(props: IMenu) {
     let current: boolean = false;
-    if ((props.text === "Конструктор" && props.location === '/') || (props.text === "Лента заказов" && props.location === '/order-history')) current = true;
+    if ((props.text === "Конструктор" && props.location === '/') || (props.text === "Лента заказов" && props.location === '/feed')) current = true;
     return (
         <section className={style.menu}>
-            <Link to={props.text === "Конструктор" ? "/" : "/order-history"}>
+            <Link to={props.text === "Конструктор" ? "/" : "/feed"}>
                 {current ? <BurgerIcon type="primary"/> : <ListIcon type="secondary"/>}
                 <p className={`text text_type_main-default ${current ? style.active : ""}`}>{props.text}</p>
             </Link>

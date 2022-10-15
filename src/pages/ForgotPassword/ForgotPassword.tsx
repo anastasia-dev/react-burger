@@ -1,17 +1,17 @@
 import React, {ChangeEvent, EventHandler, FormEvent} from "react";
 import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import style from "./ForgotPassword.module.css";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {forgotPassword} from "../../services/actions/usersAuth";
+import {forgotPassword} from "../../services/actions/thunks/usersAuth";
 import {ILocation} from "../../interfaces/ILocation";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 
 function ForgotPassword() {
     const [form, setValue] = React.useState({ email: '' });
-    const isLogged = useSelector((store: any) => store.user.isLoggedIn);
-    const dispatch: any = useDispatch();
+    const isLogged = useAppSelector(store => store.user.isLoggedIn);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation() as ILocation;
 

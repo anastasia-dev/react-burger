@@ -1,15 +1,15 @@
 import React, {ChangeEvent, FormEvent} from "react";
-import {useDispatch} from "react-redux";
 import style from "./Register.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate} from "react-router-dom";
-import {registerNewUser} from "../../services/actions/newUser";
+import {registerNewUser} from "../../services/actions/thunks/newUser";
+import { useAppDispatch } from "../../services/hooks";
 
 
 
 function Register() {
-    const dispatch: any = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [form, setValue] = React.useState({ name: '', email: '', password: '' });
     const navigate = useNavigate();

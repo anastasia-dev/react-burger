@@ -2,16 +2,17 @@ import {
     SET_REGISTER_REQUEST,
     SET_REGISTER_SUCCESS,
     SET_REGISTER_FAILED
-} from "./userRegistration";
-import {getTokens} from "../../utils/cookiesApi";
+} from "../userRegistration";
+import {getTokens} from "../../../utils/cookiesApi";
 
-import {URL_REGISTER} from "../../utils/constants";
+import {URL_REGISTER} from "../../../utils/constants";
 import {fetchAndCheckResponse} from "./usersAuth";
 import {Action, Dispatch} from "redux";
+import { AppDispatch } from "../../types";
 
 export const registerNewUser = (regData : { name: string, email: string, password: string }, redirect : () => void) => {
 
-return async function (dispatch : Dispatch<Action>) {
+return async function (dispatch : AppDispatch) {
     dispatch({
         type: SET_REGISTER_REQUEST
     });

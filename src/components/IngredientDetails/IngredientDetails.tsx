@@ -1,17 +1,17 @@
 import React from "react";
 import style from './IngredientDetails.module.css'
 import {useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
 import {IIngredient} from "../../interfaces/IIngredient";
+import { useAppSelector } from "../../services/hooks";
 
 
 function IngredientDetails () {
     const { id } = useParams();
-    const items = useSelector((store: any) => store.ingredients);
+    const items = useAppSelector(store => store.ingredients);
     const data = items.dataContent?.find((elem: IIngredient) => elem._id === id);
 
-    return (data &&
-        <div className={style.ingredientBox}>
+    if (data) {
+        return (<div className={style.ingredientBox}>
             <h1>
                 <section className={style.image}>
                     <img src={data.image_large} alt={data.name} />
@@ -38,8 +38,9 @@ function IngredientDetails () {
                     <p className="text text_type_digits-default">{data.proteins}</p>
                 </section>
             </main>
-        </div>
-    )
+        </div>);
+    }
+    return null;
 }
 
 export default IngredientDetails
