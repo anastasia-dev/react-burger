@@ -29,7 +29,7 @@ function setForgotPassFailed() {
 }
 
 export const forgotPassword = (user: { email:string }, redirect: () => void) : AppThunk => {
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -62,7 +62,7 @@ export const forgotPassword = (user: { email:string }, redirect: () => void) : A
 };
 
 export const resetPassword = (user: { token: string, password: string }, redirect: () => void) : AppThunk => {
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -92,7 +92,7 @@ export const resetPassword = (user: { token: string, password: string }, redirec
 };
 
 export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) : AppThunk => {
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         fetchAndCheckResponse(URL_LOGIN, {
             method: 'POST',
             mode: 'cors',
@@ -136,7 +136,7 @@ export const logout = (redirect: () => void): AppThunk => {
     if (!localStorage.refreshToken) {
         redirect()
     }
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_LOGOUT_REQUEST
         });
@@ -176,7 +176,7 @@ export const logout = (redirect: () => void): AppThunk => {
 
 
 export const refreshAuthToken = (): AppThunk => {
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_TOKEN_REQUEST,
             user: {}
@@ -224,7 +224,7 @@ export const refreshAuthToken = (): AppThunk => {
 };
 
 export const getUser = () : AppThunk => {
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_USER_REQUEST,
             user: {}
@@ -258,7 +258,7 @@ export const getUser = () : AppThunk => {
 }
 
 export const updateUser = (user : {name: string, email: string}) : AppThunk => {
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_USER_UPDATE_REQUEST,
             user: {}

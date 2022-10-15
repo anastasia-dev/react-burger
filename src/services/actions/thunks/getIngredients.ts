@@ -11,7 +11,7 @@ import {IIngredient} from "../../../interfaces/IIngredient";
 const getDataInfo = URL_INGREDIENTS;
 
 export const getIngredients = () : AppThunk => {
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SHOW_INGREDIENTS_REQUEST
         });

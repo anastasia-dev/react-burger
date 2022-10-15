@@ -12,7 +12,7 @@ import { getCookie } from "../../../utils/cookiesApi";
 const requestNumber = URL_ORDERS;
 
 export const getOrderNumber = (order : { ingredients: Array<string> }) : AppThunk => {
-    return function (dispatch) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SHOW_ORDER_NUMBER_REQUEST,
         });

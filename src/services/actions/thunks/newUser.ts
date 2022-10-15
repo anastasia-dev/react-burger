@@ -11,7 +11,7 @@ import {Action, Dispatch} from "redux";
 import {AppDispatch, AppThunk} from "../../types";
 
 export const registerNewUser = (regData : { name: string, email: string, password: string }, redirect : () => void) : AppThunk<Promise<void>> => {
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_REGISTER_REQUEST
         });

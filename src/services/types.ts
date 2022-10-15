@@ -23,6 +23,6 @@ export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>;
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
     RootState,
-    unknown,
-    AnyAction
+    never,
+    TApplicationActions
     >
