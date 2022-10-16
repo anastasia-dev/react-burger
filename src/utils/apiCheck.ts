@@ -1,4 +1,4 @@
-export const  checkApiResponse = (res: Response) => {
+export const checkApiResponse = (res: Response) => {
     if (!res.ok) {
         throw `Произошла ошибка ${res.status}`
     }

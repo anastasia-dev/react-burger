@@ -1,13 +1,20 @@
-import { SHOW_ORDER_NUMBER_REQUEST, SHOW_ORDER_NUMBER_SUCCESS, SHOW_ORDER_NUMBER_ERROR, CLEAR_ORDER_NUMBER} from "../actions/orderNumber";
+import { SHOW_ORDER_NUMBER_REQUEST, SHOW_ORDER_NUMBER_SUCCESS, SHOW_ORDER_NUMBER_ERROR, CLEAR_ORDER_NUMBER, OrderNumberActions} from "../actions/orderNumber";
 
-const orderNumberInitialState = {
-    orderNumber: null,
+type OrderNumberState = {
+    orderNumber? : string,
+    orderNumberSuccess : boolean,
+    orderNumberLoading : boolean,
+    orderNumberFailed : boolean
+}
+
+const orderNumberInitialState : OrderNumberState = {
+    orderNumber: undefined,
     orderNumberSuccess: false,
-    orderNumberLoading: true,
+    orderNumberLoading: false,
     orderNumberFailed: false
 };
 
-export const orderNumberReducer = (state = orderNumberInitialState, action) => {
+export const orderNumberReducer = (state : OrderNumberState = orderNumberInitialState, action : OrderNumberActions) : OrderNumberState=> {
     switch (action.type) {
         case SHOW_ORDER_NUMBER_REQUEST: {
             return {
@@ -27,7 +34,6 @@ export const orderNumberReducer = (state = orderNumberInitialState, action) => {
         }
         case SHOW_ORDER_NUMBER_ERROR: {
             return {
-                orderNumber: action.data,
                 orderNumberLoading: false,
                 orderNumberSuccess: false,
                 orderNumberFailed: true
@@ -35,8 +41,8 @@ export const orderNumberReducer = (state = orderNumberInitialState, action) => {
         }
         case CLEAR_ORDER_NUMBER: {
             return {
-                orderNumber: null,
-                orderNumberLoading: true,
+                orderNumber: undefined,
+                orderNumberLoading: false,
                 orderNumberSuccess: false,
                 orderNumberFailed: false,
             }

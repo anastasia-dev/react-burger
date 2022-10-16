@@ -1,6 +1,6 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import {isAuthorized} from "../../services/actions/usersAuth";
+import {isAuthorized} from "../../services/actions/thunks/usersAuth";
 import {IProtect} from "../../interfaces/IProtect";
 import {ILocation} from "../../interfaces/ILocation";
 

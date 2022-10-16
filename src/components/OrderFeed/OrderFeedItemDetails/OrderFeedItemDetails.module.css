@@ -1,0 +1,85 @@
+.ingredientBox {
+    text-align: left;
+    margin: 0 auto;
+    padding: 0 20px 0 20px;
+}
+
+.orderLine {
+    display: flex;
+    flex-direction: row;
+    width: 95%;
+    justify-content: space-between;
+}
+
+.leftPart, .rightPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.elementsList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: scroll;
+    max-height: 300px;
+}
+
+.textColor {
+    color:  rgb(0, 204, 204);
+}
+
+.headInfo p {
+    margin: 10px 0 10px;
+}
+
+.icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 100px;
+    position: relative;
+    border: 3px solid rgba(76,	76,	255, 1);
+    background: #131316;
+}
+
+.icon:not(:first-child) {
+    margin-left: -20px;
+}
+
+.icon img {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.iconsBlock {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+}
+
+.bottomLine {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 0 20px 0;
+}
+
+.price {
+    display: flex;
+    justify-content: right;
+}
+.date {
+    color: rgb(133, 133, 173);
+}
+
+.name {
+    margin-left: 10px;
+}
+
+.ingredientCaption {
+    width: 100%;
+    margin: auto;
+    max-width: fit-content;
+}

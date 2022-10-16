@@ -2,16 +2,16 @@ import React, {ChangeEvent, FormEvent, useEffect} from "react";
 import style from "./Profile.module.css";
 import {NavLink, useNavigate} from "react-router-dom";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {getUser, logout, updateUser} from "../../services/actions/usersAuth";
+import {getUser, logout, updateUser} from "../../services/actions/thunks/usersAuth";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 
 function Profile() {
-    const dispatch: any = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const redirect = () => {navigate('/login')};
-    const user = useSelector((store: any) => store.user);
-    const [form, setValue] = React.useState({ email: user.email ?? '' , password : user.password ?? '', name: user.name ?? '' })
+    const user = useAppSelector(store => store.user);
+    const [form, setValue] = React.useState({ email: user.email ?? '' , password : '', name: user.name ?? '' })
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });

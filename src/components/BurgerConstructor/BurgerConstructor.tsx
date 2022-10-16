@@ -3,31 +3,31 @@ import style from './BurgerConstructor.module.css'
 import {CurrencyIcon, Button, ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import {useDispatch, useSelector} from "react-redux";
-import {getOrderNumber} from "../../services/actions/getOrderNumber";
+import {getOrderNumber} from "../../services/actions/thunks/getOrderNumber";
 import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN} from "../../services/actions/constructor";
 import {CLEAR_ORDER_NUMBER} from "../../services/actions/orderNumber";
 import {CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT} from "../../services/actions/ingredients";
 import {useDrop} from 'react-dnd';
 import EditableItem from "./EditableItem/EditableItem";
-import {isAuthorized} from "../../services/actions/usersAuth";
+import {isAuthorized} from "../../services/actions/thunks/usersAuth";
 import {useLocation, useNavigate} from "react-router-dom";
 import {IEditIngredient, IIngredient} from "../../interfaces/IIngredient";
 import {ILocation} from "../../interfaces/ILocation";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 
 function BurgerConstructor () {
-    const elements  = useSelector((state: any) => state.ingredients);
-    const editableElements = useSelector((state: any)  => state.editableIngredients);
-    const orderNumberLoading = useSelector((state: any)  => state.orderNumber.orderNumberLoading);
+    const elements  = useAppSelector(state => state.ingredients);
+    const editableElements = useAppSelector(state  => state.editableIngredients);
+    const orderNumber = useAppSelector(state => state.orderNumber);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location = useLocation() as ILocation;
-    const dispatch: any = useDispatch();
     let content: ReactElement = (<></>);
 
     const getSum = () : number => {
         let sum: number = 0;
         if(editableElements.ingredientList) {
-            sum += editableElements.ingredientList.reduce(function (prevSum:number, elem:IIngredient) : number {
+            sum += editableElements.ingredientList.reduce((prevSum, elem) => {
                 return prevSum + elem.price;
             }, 0);
         }
@@ -68,7 +68,7 @@ function BurgerConstructor () {
     const deleteItem = (itemUid : string): void => {
         dispatch({
             type: DECREASE_ITEM_COUNT,
-            itemId: editableElements.ingredientList.find((ingredient : IEditIngredient) => ingredient.uid === itemUid)._id
+            itemId: editableElements.ingredientList.find(ingredient => ingredient.uid === itemUid)?._id ?? ""
         });
         dispatch({
             type: DELETE_INGREDIENT,
@@ -79,8 +79,8 @@ function BurgerConstructor () {
     const [, dropIngredient] = useDrop({
         accept: "draggableIngredient",
         drop(itemId : any) {
-            const element = elements.dataContent.find((e : IIngredient) => e._id === itemId.id);
-            if(element.type === 'bun') {
+            const element = elements.dataContent?.find(e => e._id === itemId.id);
+            if(element?.type === 'bun') {
                 if (editableElements.bun)
                     dispatch({
                         type: DECREASE_ITEM_COUNT,
@@ -98,7 +98,7 @@ function BurgerConstructor () {
             }
             dispatch({
                 type: INCREASE_ITEM_COUNT,
-                itemId: element._id
+                itemId: element?._id
             });
         },
     });
@@ -108,7 +108,7 @@ function BurgerConstructor () {
     if(!elements.ingredientsLoading) {
         content = (
             <section ref={dropIngredient} className={style.mainSection}>
-                {!orderNumberLoading && (
+                {(orderNumber.orderNumberLoading || orderNumber.orderNumberSuccess) && (
                     <Modal close={hideOrderModal}>
                         <OrderDetails />
                     </Modal>
@@ -135,7 +135,7 @@ function BurgerConstructor () {
                     }
                 </section>
                 <section className={style.editableSection}>
-                    {editableElements.ingredientList.map((item : IEditIngredient)=>(
+                    {editableElements.ingredientList.map(item =>(
                         <EditableItem key={item.uid} item={item} deleteItem={deleteItem}/>
                     ))}
                 </section>

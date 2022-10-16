@@ -3,19 +3,30 @@ import {
     DELETE_INGREDIENT,
     SET_BUN,
     CLEAR_CONSTRUCTOR_DATA,
-    SWAP_INGREDIENTS
+    SWAP_INGREDIENTS,
+    BurgerConstructorActions
 } from "../actions/constructor";
 import { v4 as uuidv4 } from "uuid";
+import { IIngredient } from "../../interfaces/IIngredient";
 
-const constructorInitialState = {
-    ingredientList:  [],
-    bun: null
+interface IConstructorIngredient extends IIngredient {
+    uid: string
 }
 
-export const burgerConstructorReducer = (state = constructorInitialState, action) => {
+type BurgerConstructorState = {
+    ingredientList : Array<IConstructorIngredient>
+    bun? : IIngredient
+}
+
+const constructorInitialState : BurgerConstructorState = {
+    ingredientList: [],
+    bun: undefined
+}
+
+export const burgerConstructorReducer = (state : BurgerConstructorState = constructorInitialState, action : BurgerConstructorActions) : BurgerConstructorState => {
     switch (action.type) {
         case ADD_INGREDIENT: {
-            state.ingredientList.push({ ...action.item, uid: uuidv4() });
+            state.ingredientList.push({ ...action.item as IIngredient, uid: uuidv4() });
             return {
                 ...state
             };
@@ -34,8 +45,8 @@ export const burgerConstructorReducer = (state = constructorInitialState, action
         }
         case CLEAR_CONSTRUCTOR_DATA: {
             return {
-                ingredientList:  [],
-                bun: null
+                ingredientList: [],
+                bun: undefined
             };
         }
         case SWAP_INGREDIENTS: {

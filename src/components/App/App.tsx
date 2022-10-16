@@ -13,14 +13,19 @@ import OrderHistory from "../../pages/OrderHistory/OrderHistory";
 import ProfileOrderHistory from "../../pages/Profile/ProfileOrderHistory/ProfileOrderHistory";
 import {ProtectedFromUnauthorizedRoute} from "../ProtectedFromUnauthorizedRoute/ProtectedFromUnauthorizedRoute";
 import {ProtectedFromAuthorizedRoute} from "../ProtectedFromAuthorizedRoute/ProtectedFromAuthorizedRoute";
-import {useDispatch} from "react-redux";
-import {getIngredients} from "../../services/actions/getIngredients";
+import {getIngredients} from "../../services/actions/thunks/getIngredients";
 import IngredientDetailsModal from "../BurgerIngredients/IngredientDetailsModal/IngredientDetailsModal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { useAppDispatch } from '../../services/hooks';
+import { ILocation } from '../../interfaces/ILocation';
+import OrderHistoryDetails from '../../pages/OrderHistory/OrderHistoryDetails/OrderHistoryDetails';
+import OrderFeedItemDetailsModal from '../OrderFeed/OrderFeedItemDetails/OrderFeedItemDetailsModal';
+import ProfileOrderHistoryDetails from '../../pages/Profile/ProfileOrderHistory/ProfileOrderHistoryDetails/ProfileOrderHistoryDetails';
+import ProfileOrderFeedItemDetailsModal from '../ProfileOrderFeed/ProfileOrderFeedItemDetailsModal';
 
 function App () {
-    const dispatch = useDispatch<any>();
-    const location = useLocation();
+    const dispatch = useAppDispatch();
+    const location = useLocation() as ILocation;
     const background = (location.state as any)?.background;
 
     React.useEffect(()=>{ dispatch(getIngredients()); }, []);
@@ -63,17 +68,24 @@ function App () {
                     } />
                     <Route path="/profile/orders/:id" element={
                         <ProtectedFromUnauthorizedRoute>
-                            <ProfileOrderHistory />
+                            <ProfileOrderHistoryDetails />
                         </ProtectedFromUnauthorizedRoute>
                     } />
                     <Route path="/ingredients/:id" element={<IngredientDetails />} />
-                    <Route path="/order-history" element={<OrderHistory />} />
+                    <Route path="/feed" element={<OrderHistory />} />
+                    <Route path="/feed/:id" element={<OrderHistoryDetails />} />
                     <Route path="/" element={<Home />} />
                     <Route element={<NotFound />} />
             </Routes>
             {background && (
                 <Routes>
                     <Route path="/ingredients/:id" element={<IngredientDetailsModal />} />
+                    <Route path="/feed/:id" element={<OrderFeedItemDetailsModal />} />
+                    <Route path="/profile/orders/:id" element={
+                        <ProtectedFromUnauthorizedRoute>
+                            <ProfileOrderFeedItemDetailsModal />
+                        </ProtectedFromUnauthorizedRoute>
+                    } />
                 </Routes>
             )}
         </div>

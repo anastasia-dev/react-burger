@@ -1,4 +1,4 @@
-import {checkApiResponse} from "../../utils/apiCheck";
+import {checkApiResponse} from "../../../utils/apiCheck";
 import {
     SET_FORGOT_PASSWORD_FAILED,
     SET_FORGOT_PASSWORD_REQUEST,
@@ -15,11 +15,12 @@ import {
     SET_USER_UPDATE_FAILED,
     SET_USER_UPDATE_REQUEST,
     SET_USER_UPDATE_SUCCESS
-} from "./userRegistration";
-import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA} from "../../utils/constants";
-import {deleteCookie, getCookie, getTokens} from "../../utils/cookiesApi";
+} from "../userRegistration";
+import {URL_LOGIN, URL_LOGOUT, URL_PWD_RESET, URL_PWD_RESET_DONE, URL_USER_DATA} from "../../../utils/constants";
+import {deleteCookie, getCookie, getTokens} from "../../../utils/cookiesApi";
 import {useNavigate} from "react-router-dom";
 import {Action, Dispatch} from "redux";
+import {AppDispatch, AppThunk} from "../../types";
 
 function setForgotPassFailed() {
     return {
@@ -27,8 +28,8 @@ function setForgotPassFailed() {
     }
 }
 
-export const forgotPassword = (user: { email:string }, redirect: () => void) => {
-    return async function (dispatch: Dispatch<Action>) {
+export const forgotPassword = (user: { email:string }, redirect: () => void) : AppThunk => {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -60,8 +61,8 @@ export const forgotPassword = (user: { email:string }, redirect: () => void) => 
 
 };
 
-export const resetPassword = (user: { token: string, password: string }, redirect: () => void) => {
-    return async function (dispatch: Dispatch<Action>) {
+export const resetPassword = (user: { token: string, password: string }, redirect: () => void) : AppThunk => {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_FORGOT_PASSWORD_REQUEST
         });
@@ -90,8 +91,8 @@ export const resetPassword = (user: { token: string, password: string }, redirec
 
 };
 
-export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) => {
-    return function (dispatch: Dispatch<Action>) {
+export const login = (user: {email: string, password: string}, redirect: (isRedirect: boolean) => void) : AppThunk => {
+    return function (dispatch: AppDispatch) {
         fetchAndCheckResponse(URL_LOGIN, {
             method: 'POST',
             mode: 'cors',
@@ -131,14 +132,16 @@ export const login = (user: {email: string, password: string}, redirect: (isRedi
     };
 };
 
-export const logout = (redirect: () => void) => {
+export const logout = (redirect: () => void): AppThunk => {
     if (!localStorage.refreshToken) {
         redirect()
     }
-    return function (dispatch: Dispatch<Action>) {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_LOGOUT_REQUEST
         });
+        localStorage.removeItem('refreshToken');
+        deleteCookie('token');
         fetchAndCheckResponse(URL_LOGOUT, {
             method: 'POST',
             mode: 'cors',
@@ -151,8 +154,6 @@ export const logout = (redirect: () => void) => {
             referrerPolicy: 'no-referrer',
             body: JSON.stringify({ token: localStorage.refreshToken })
         }).then((res) => {
-                localStorage.removeItem('refreshToken');
-                deleteCookie('token');
                 if (res && res.success) {
                     dispatch({
                         type: SET_LOGOUT_SUCCESS,
@@ -174,8 +175,8 @@ export const logout = (redirect: () => void) => {
 };
 
 
-export const refreshAuthToken = () => {
-    return async function (dispatch: Dispatch<Action>) {
+export const refreshAuthToken = (): AppThunk => {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: SET_TOKEN_REQUEST,
             user: {}
@@ -218,13 +219,12 @@ export const refreshAuthToken = () => {
                         user: {}
                     })
                 }
-
             });
     };
 };
 
-export const getUser = () => {
-    return function (dispatch: Dispatch<Action>) {
+export const getUser = () : AppThunk => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_USER_REQUEST,
             user: {}
@@ -257,8 +257,8 @@ export const getUser = () => {
     }
 }
 
-export const updateUser = (user : {name: string, email: string}) => {
-    return function (dispatch: Dispatch<any>) {
+export const updateUser = (user : {name: string, email: string}) : AppThunk => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: SET_USER_UPDATE_REQUEST,
             user: {}

@@ -1,21 +1,30 @@
+import { IIngredient } from "../../interfaces/IIngredient";
 import {
     SHOW_INGREDIENTS_REQUEST,
     SHOW_INGREDIENTS_SUCCESS,
     SHOW_INGREDIENTS_ERROR,
     INCREASE_ITEM_COUNT,
     DECREASE_ITEM_COUNT,
-    CLEAR_ITEM_COUNT
+    CLEAR_ITEM_COUNT,
+    IngredientActions
 } from "../actions/ingredients";
 
 
-const ingredientsInitialState = {
+type IngredientsState = {
+    dataContent? : ReadonlyArray<IIngredient>,
+    ingredientsLoading : boolean,
+    ingredientsSuccess : boolean,
+    ingredientsFailed : boolean,
+}
+
+const ingredientsInitialState : IngredientsState = {
     dataContent: [],
     ingredientsLoading: false,
     ingredientsSuccess: false,
     ingredientsFailed: false
 }
 
-export const ingredientsReducer = (state = ingredientsInitialState, action) => {
+export const ingredientsReducer = (state : IngredientsState = ingredientsInitialState, action : IngredientActions) : IngredientsState => {
     switch (action.type) {
         case SHOW_INGREDIENTS_REQUEST: {
             return {
@@ -25,7 +34,7 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
         }
         case SHOW_INGREDIENTS_ERROR: {
             return {
-                dataContent: action.data,
+                dataContent: [],
                 ingredientsLoading: false,
                 ingredientsSuccess: false,
                 ingredientsFailed: true,
@@ -33,7 +42,6 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
         }
         case SHOW_INGREDIENTS_SUCCESS: {
             return {
-                ...state,
                 dataContent: action.data,
                 ingredientsLoading: false,
                 ingredientsFailed: false,
@@ -41,8 +49,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             };
         }
         case DECREASE_ITEM_COUNT: {
-            const item = state.dataContent.find(item => item._id === action.itemId);
-            if(item.type === 'bun') {
+            const item = state.dataContent?.find(item => item._id === action.itemId);
+            if(item?.type === 'bun') {
                 if (item && item.count > 0)
                     item.count = item.count - 2;
                 else
@@ -58,8 +66,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             };
         }
         case INCREASE_ITEM_COUNT: {
-            const item = state.dataContent.find(item => item._id === action.itemId);
-            if(item.type === 'bun') {
+            const item = state.dataContent?.find(item => item._id === action.itemId);
+            if(item?.type === 'bun') {
                 if (item)
                     item.count = item.count + 2;
                 else
@@ -75,8 +83,7 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             };
         }
         case CLEAR_ITEM_COUNT: {
-            state.dataContent.forEach((elem, index) => elem.count = 0);
-
+            state.dataContent?.forEach((elem, index) => elem.count = 0);
             return {
                 ...state,
             };

@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, FC} from "react";
-import {isAuthorized} from "../../services/actions/usersAuth";
+import {isAuthorized} from "../../services/actions/thunks/usersAuth";
 import {IProtect} from "../../interfaces/IProtect";
 
 export const ProtectedFromAuthorizedRoute = ({ children }:IProtect) => {

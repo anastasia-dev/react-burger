@@ -1,19 +1,18 @@
 import React, {ChangeEvent, FormEvent} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import style from "./Login.module.css";
 import styleMain from "../../pages/ForgotPassword/ForgotPassword.module.css";
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link, useNavigate, useLocation} from "react-router-dom";
-import {login} from "../../services/actions/usersAuth";
+import {login} from "../../services/actions/thunks/usersAuth";
 import {ILocation} from "../../interfaces/ILocation";
+import { useAppDispatch } from "../../services/hooks";
 
 function Login() {
-    const dispatch : any = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const location  = useLocation() as ILocation;
 
     const fromPage = location.state?.from?.pathname ?? '/';
-    const {email, password} = useSelector((store: any) => store.user);
 
     const redirect = (isRedirect: boolean) => {
         if (isRedirect) {
@@ -21,7 +20,7 @@ function Login() {
         }
     };
 
-    const [form, setValue] = React.useState({ email : email ?? '' , password : password ?? '' })
+    const [form, setValue] = React.useState({ email : '' , password : '' })
     const onChange = (e : ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value })
     }
