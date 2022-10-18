@@ -1,57 +1,55 @@
 describe("Check order creation and ingredients drag and drop functionality.", () => {
     before(() => {
-
-        cy.visit('http://localhost:3000');
-        cy.clearCookies()
-        cy.clearLocalStorage()
-        cy.reload()
+        cy.visit('/');
     })
 
+    const editableItemSelector = '[class^=BurgerConstructor_editableItem]';
+    const bunItemSelector = '[class^=constructor-element]';
+
     it("check constructor is empty", () => {
-        cy.get('[class^=BurgerConstructor_editableItem]').should("not.exist");
-        cy.get('[class^=constructor-element]').should("not.exist");
+        cy.get(editableItemSelector).should("not.exist");
+        cy.get(bunItemSelector).should("not.exist");
     });
 
-    it("add bunds to constructor", () => {
-        cy.contains('булка').trigger('dragstart');
-        
-        cy.get('[class^=BurgerConstructor_mainSection]').trigger('drop');
+    const constructorMainSectionSelector = '[class^=BurgerConstructor_mainSection]';
 
+    it("add buns to constructor", () => {
+        cy.contains('булка').trigger('dragstart');
+        cy.get(constructorMainSectionSelector).trigger('drop');
         //buns exists
         cy.get('[class$=constructor-element_pos_top]').should('exist');
         cy.get('[class$=constructor-element_pos_bottom]').should('exist');
         //no ingredients
-        cy.get('[class^=BurgerConstructor_editableItem]').should("not.exist");
+        cy.get(editableItemSelector).should("not.exist");
     })
 
     it("add ingredients to constructor", () => {
         cy.contains('Кристаллы').trigger('dragstart');
-
-        cy.get('[class^=BurgerConstructor_mainSection]').trigger('drop');
-
-        cy.get('[class^=BurgerConstructor_editableItem]').should("exist");
+        cy.get(constructorMainSectionSelector).trigger('drop');
+        cy.get(editableItemSelector).should("exist");
     })
-
+    
     it("click to order", () => {
-        cy.contains('Оформить заказ').click();
-
-        cy.url().should('eq', 'http://localhost:3000/login');
-
+        const baseUrl = Cypress.config('baseUrl');
+        const makeOrderText = 'Оформить заказ';
+        cy.contains(makeOrderText).click();
+        cy.url().should('eq', `${baseUrl}/login`);
         cy.get('input[name="email"]').type('cycycytest@mail.com');
         cy.get('input[name="password"]').type('1234567');
         cy.get('[class^=button_button]').click();
         
-        
-        cy.url().should('eq', 'http://localhost:3000/');
-        cy.contains('Оформить заказ').click();
-        cy.get('[class^=Modal_modalPopup]').contains('Заказ отправлен');
+        cy.url().should('eq', `${baseUrl}/`);
+        cy.contains(makeOrderText).click();
+
+        const modalPopupSelector = '[class^=Modal_modalPopup]';
+        cy.get(modalPopupSelector).contains('Заказ отправлен');
         cy.wait(25000);
-        cy.get('[class^=Modal_modalPopup]').contains('Ваш заказ начали готовить');
-        cy.get("[class^=Modal_modalPopup]").find("svg").first().click();
+        cy.get(modalPopupSelector).contains('Ваш заказ начали готовить');
+        cy.get(modalPopupSelector).find("svg").first().click();
     })
 
     it("check constructor is empty", () => {
-        cy.get('[class^=BurgerConstructor_editableItem]').should("not.exist");
-        cy.get('[class^=constructor-element]').should("not.exist");
+        cy.get(editableItemSelector).should("not.exist");
+        cy.get(bunItemSelector).should("not.exist");
     });
 })

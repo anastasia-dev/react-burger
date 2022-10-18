@@ -1,78 +1,46 @@
 import { CLEAR_ORDER_NUMBER, SHOW_ORDER_NUMBER_ERROR, SHOW_ORDER_NUMBER_REQUEST, SHOW_ORDER_NUMBER_SUCCESS } from "../actions/orderNumber";
-import { orderNumberReducer } from "./odrerNumberReducer";
+import { orderNumberInitialState, orderNumberReducer } from "./odrerNumberReducer";
 
 describe("order number reducer", () => {
     it("should return the order number reducer inital state", () => {
-        expect(orderNumberReducer(undefined, {})).toEqual({
-           orderNumber: undefined,
-           orderNumberFailed: false,
-           orderNumberLoading: false,
-           orderNumberSuccess: false,
-        });
+        expect(orderNumberReducer(undefined, {})).toEqual(orderNumberInitialState);
     });
 
     it("should handle SHOW_ORDER_NUMBER_REQUEST", () => {
-        expect(orderNumberReducer({
-            orderNumber: undefined,
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
-         }, {
+        expect(orderNumberReducer(orderNumberInitialState, {
             type: SHOW_ORDER_NUMBER_REQUEST
          })).toEqual({
-            orderNumber: undefined,
-            orderNumberFailed: false,
-            orderNumberLoading: true,
-            orderNumberSuccess: false,
+            ...orderNumberInitialState,
+            orderNumberLoading: true
          });
     })
 
     it("should handle SHOW_ORDER_NUMBER_ERROR", () => {
-        expect(orderNumberReducer({
-            orderNumber: undefined,
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
-         }, {
+        expect(orderNumberReducer(orderNumberInitialState, {
             type: SHOW_ORDER_NUMBER_ERROR
          })).toEqual({
-            orderNumber: undefined,
-            orderNumberFailed: true,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
+            ...orderNumberInitialState,
+            orderNumberFailed: true
          });
     })
 
     it("should handle SHOW_ORDER_NUMBER_SUCCESS", () => {
-        expect(orderNumberReducer({
-            orderNumber: undefined,
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
-         }, {
+        expect(orderNumberReducer(orderNumberInitialState, {
             type: SHOW_ORDER_NUMBER_SUCCESS,
             data: "123"
          })).toEqual({
+            ...orderNumberInitialState,
             orderNumber: "123",
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: true,
+            orderNumberSuccess: true
          });
     })
 
     it("should handle CLEAR_ORDER_NUMBER", () => {
         expect(orderNumberReducer({
-            orderNumber: "1234",
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
+            ...orderNumberInitialState,
+            orderNumber: "1234"
          }, {
             type: CLEAR_ORDER_NUMBER,
-         })).toEqual({
-            orderNumber: undefined,
-            orderNumberFailed: false,
-            orderNumberLoading: false,
-            orderNumberSuccess: false,
-         });
+         })).toEqual(orderNumberInitialState);
     })
 });

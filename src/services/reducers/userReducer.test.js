@@ -1,96 +1,44 @@
 import { SET_FORGOT_PASSWORD_FAILED, SET_FORGOT_PASSWORD_REQUEST, SET_FORGOT_PASSWORD_SUCCESS, SET_LOGIN_FAILED, SET_LOGIN_REQUEST, SET_LOGIN_SUCCESS, SET_LOGOUT_FAILED, SET_LOGOUT_REQUEST, SET_LOGOUT_SUCCESS, SET_REGISTER_FAILED, SET_REGISTER_REQUEST, SET_REGISTER_SUCCESS, SET_TOKEN_FAILED, SET_TOKEN_REQUEST, SET_TOKEN_SUCCESS, SET_USER_FAILED, SET_USER_REQUEST, SET_USER_UPDATE_FAILED, SET_USER_UPDATE_REQUEST, SET_USER_UPDATE_SUCCESS } from "../actions/userRegistration";
-import { userReducer } from "./userReducer";
+import { userInitialState, userReducer } from "./userReducer";
 
 describe("user reducer", () => {
     it("should return the reducer inital state", () => {
-        expect(userReducer(undefined, {})).toEqual({
-            name: '',
-            email: '',
-            isLoggedIn : false,
-        
-            registerRequest: false,
-            registerFailed: false,
-        
-            loginRequest: false,
-            loginFailed: false,
-        
-            logoutRequest: false,
-            logoutFailed: false,
-        
-            forgotRequest: false,
-            forgotFailed: false,
-        
-            resetRequest: false,
-            resetFailed: false,
-        
-            authRequest: false,
-            authFailed: false,
-        
-            tokenRequest: false,
-            tokenFailed: false,
-        });
+        expect(userReducer(undefined, {})).toEqual(userInitialState);
     });
-
-    const initalState = {
-        name: '',
-        email: '',
-        isLoggedIn : false,
-
-        registerRequest: false,
-        registerFailed: false,
-
-        loginRequest: false,
-        loginFailed: false,
-
-        logoutRequest: false,
-        logoutFailed: false,
-
-        forgotRequest: false,
-        forgotFailed: false,
-
-        resetRequest: false,
-        resetFailed: false,
-
-        authRequest: false,
-        authFailed: false,
-
-        tokenRequest: false,
-        tokenFailed: false,
-    };
 
     it("should handle SET_FORGOT_PASSWORD_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             forgotRequest: false,
          }, {
             type: SET_FORGOT_PASSWORD_REQUEST
          })).toEqual({
-            ...initalState,
+            ...userInitialState,
             forgotRequest : true,
          });
     })
 
     it("should handle SET_FORGOT_PASSWORD_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             forgotFailed: false 
         }, {
             type: SET_FORGOT_PASSWORD_FAILED
         })).toEqual({
-        ...initalState,
-        forgotFailed : true
+            ...userInitialState,
+            forgotFailed : true
         });
     })
 
     it("should handle SET_FORGOT_PASSWORD_SUCCESS", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             forgotFailed: true,
             forgotRequest: true 
         }, {
             type: SET_FORGOT_PASSWORD_SUCCESS
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             forgotFailed : false,
             forgotRequest : false
         });
@@ -98,88 +46,89 @@ describe("user reducer", () => {
 
     it("should handle SET_REGISTER_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             registerRequest: false,
          }, {
             type: SET_REGISTER_REQUEST
          })).toEqual({
-            ...initalState,
+            ...userInitialState,
             registerRequest : true,
          });
     })
 
     it("should handle SET_REGISTER_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             registerFailed: false 
         }, {
             type: SET_REGISTER_FAILED
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             registerFailed : true
         });
     })
 
+    const testName = "testName"
+    const testEmail = "testEmail"
+
     it("should handle SET_REGISTER_SUCCESS", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             registerFailed: true,
             registerRequest: true 
         }, {
             type: SET_REGISTER_SUCCESS,
             user: {
-                name: "name",
-                email: "email"
+                name: testName,
+                email: testEmail
             }
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             registerFailed : false,
             registerRequest : false,
-            name: "name",
-            email: "email"
+            name: testName,
+            email: testEmail
         });
     })
 
-
-
     it("should handle SET_LOGIN_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             loginRequest: false,
          }, {
             type: SET_LOGIN_REQUEST
          })).toEqual({
-            ...initalState,
+            ...userInitialState,
             loginRequest : true,
          });
     })
 
     it("should handle SET_LOGIN_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             loginFailed: false,
         }, {
             type: SET_LOGIN_FAILED
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             loginFailed : true,
         });
     })
 
     it("should handle SET_LOGIN_SUCCESS", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             loginFailed: false,
         }, {
             type: SET_LOGIN_SUCCESS,
             user: {
-                name: "name",
-                email: "email"
+                name: testName,
+                email: testEmail
             }
         })).toEqual( {
-            ...initalState,
-            name: "name",
-            email: "email",
+            ...userInitialState,
+            name: testName,
+            email: testEmail,
             isLoggedIn : true
         });
     })
@@ -188,61 +137,61 @@ describe("user reducer", () => {
 
     it("should handle SET_LOGOUT_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             logoutRequest: false,
          }, {
             type: SET_LOGOUT_REQUEST
          })).toEqual({
-            ...initalState,
+            ...userInitialState,
             logoutRequest : true,
          });
     })
 
     it("should handle SET_LOGOUT_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             logoutFailed: false 
         }, {
             type: SET_LOGOUT_FAILED
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             logoutFailed : true
         });
     })
 
     it("should handle SET_LOGOUT_SUCCESS", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             name: "name",
             email: "email",
             isLoggedIn: true
         }, {
             type: SET_LOGOUT_SUCCESS
-        })).toEqual(initalState);
+        })).toEqual(userInitialState);
     })
 
 
     it("should handle SET_USER_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             authRequest: false
         }, {
             type: SET_USER_REQUEST
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             authRequest: true
         });
     })
 
     it("should handle SET_USER_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             authFailed: false,
             isLoggedIn: true
         }, {
             type: SET_USER_FAILED
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             authFailed: true,
             isLoggedIn: false
         });
@@ -250,31 +199,31 @@ describe("user reducer", () => {
 
     it("should handle SET_USER_UPDATE_REQUEST", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             authRequest: false,
         }, {
             type: SET_USER_UPDATE_REQUEST
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             authRequest: true,
         });
     })
 
     it("should handle SET_USER_UPDATE_FAILED", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             authFailed: false,
         }, {
             type: SET_USER_UPDATE_FAILED
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             authFailed: true,
         });
     })
 
     it("should handle SET_USER_UPDATE_SUCCESS", () => {
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             authFailed: true,
             authRequest: true,
         }, {
@@ -284,7 +233,7 @@ describe("user reducer", () => {
                 email: "email"
             }
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             authFailed: false,
             authRequest: false,
             name: "name",
@@ -294,22 +243,22 @@ describe("user reducer", () => {
     })
 
     it("should handle SET_TOKEN_REQUEST", ()=>{
-        expect(userReducer(initalState, {
+        expect(userReducer(userInitialState, {
             type: SET_TOKEN_REQUEST,
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             tokenRequest: true,
         });
     })
 
     it("should handle SET_TOKEN_FAILED", ()=>{
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             isLoggedIn: true
         }, {
             type: SET_TOKEN_FAILED,
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             tokenFailed: true,
             isLoggedIn: false
         });
@@ -317,13 +266,13 @@ describe("user reducer", () => {
 
     it("should handle SET_TOKEN_SUCCESS", ()=>{
         expect(userReducer({
-            ...initalState,
+            ...userInitialState,
             tokenRequest: true,
             tokenFailed: true
         }, {
             type: SET_TOKEN_SUCCESS,
         })).toEqual({
-            ...initalState,
+            ...userInitialState,
             tokenRequest: false,
             tokenFailed: false,
             isLoggedIn: true

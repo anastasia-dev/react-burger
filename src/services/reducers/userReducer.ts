@@ -53,7 +53,7 @@ type UserState = {
     tokenFailed : boolean
 }
 
-const userInitialState : UserState = {
+export const userInitialState : UserState = {
     name: '',
     email: '',
     isLoggedIn : false,

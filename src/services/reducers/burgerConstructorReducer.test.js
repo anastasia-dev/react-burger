@@ -1,16 +1,11 @@
 import { ADD_INGREDIENT, CLEAR_CONSTRUCTOR_DATA, DELETE_INGREDIENT, SET_BUN, SWAP_INGREDIENTS } from "../actions/constructor";
-import { burgerConstructorReducer } from "./burgerConstructorReducer";
+import { burgerConstructorReducer, constructorInitialState } from "./burgerConstructorReducer";
 
 describe("burger constructor reducer", () => {
     let state = burgerConstructorReducer(undefined, {});
 
     it("should return the burger constructor reducer inital state", () => {
-        expect(state).toEqual(
-            {
-                ingredientList: [],
-                bun: undefined
-            }
-        );
+        expect(state).toEqual(constructorInitialState);
     })
 
     const ingredient1 = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import style from "./App.module.css";
-import {Routes, Route, useLocation } from "react-router-dom";
+import {Routes, Route, useLocation, Navigate} from "react-router-dom";
 import AppHeader from "../AppHeader/AppHeader";
 import NotFound from "../../pages/NotFound/NotFound";
 import ForgotPassword from "../../pages/ForgotPassword/ForgotPassword";
@@ -35,47 +35,50 @@ function App () {
             <AppHeader />
 
             <Routes location={background || location}>
-                    <Route path="/login" element={
-                        <ProtectedFromAuthorizedRoute>
-                            <Login />
-                        </ProtectedFromAuthorizedRoute>
-                    } />
-                    <Route path="/forgot-password" element={
-                        <ProtectedFromAuthorizedRoute>
-                            <ForgotPassword />
-                        </ProtectedFromAuthorizedRoute>
-                    } />
-                    <Route path="/reset-password" element={
-                        <ProtectedFromAuthorizedRoute>
-                            <ResetPassword />
-                        </ProtectedFromAuthorizedRoute>
-                    } />
-                    <Route path="/register" element={
-                        <ProtectedFromAuthorizedRoute>
-                            <Register />
-                        </ProtectedFromAuthorizedRoute>
-                    } />
+                <Route path="/react-burger" element={
+                    <Navigate to={"/"} replace />
+                } />
+                <Route path="/login" element={
+                    <ProtectedFromAuthorizedRoute>
+                        <Login />
+                    </ProtectedFromAuthorizedRoute>
+                } />
+                <Route path="/forgot-password" element={
+                    <ProtectedFromAuthorizedRoute>
+                        <ForgotPassword />
+                    </ProtectedFromAuthorizedRoute>
+                } />
+                <Route path="/reset-password" element={
+                    <ProtectedFromAuthorizedRoute>
+                        <ResetPassword />
+                    </ProtectedFromAuthorizedRoute>
+                } />
+                <Route path="/register" element={
+                    <ProtectedFromAuthorizedRoute>
+                        <Register />
+                    </ProtectedFromAuthorizedRoute>
+                } />
 
-                    <Route path="/profile" element={
-                        <ProtectedFromUnauthorizedRoute>
-                            <Profile />
-                        </ProtectedFromUnauthorizedRoute>
-                    } />
-                    <Route path="/profile/orders" element={
-                        <ProtectedFromUnauthorizedRoute>
-                            <ProfileOrderHistory />
-                        </ProtectedFromUnauthorizedRoute>
-                    } />
-                    <Route path="/profile/orders/:id" element={
-                        <ProtectedFromUnauthorizedRoute>
-                            <ProfileOrderHistoryDetails />
-                        </ProtectedFromUnauthorizedRoute>
-                    } />
-                    <Route path="/ingredients/:id" element={<IngredientDetails />} />
-                    <Route path="/feed" element={<OrderHistory />} />
-                    <Route path="/feed/:id" element={<OrderHistoryDetails />} />
-                    <Route path="/" element={<Home />} />
-                    <Route element={<NotFound />} />
+                <Route path="/profile" element={
+                    <ProtectedFromUnauthorizedRoute>
+                        <Profile />
+                    </ProtectedFromUnauthorizedRoute>
+                } />
+                <Route path="/profile/orders" element={
+                    <ProtectedFromUnauthorizedRoute>
+                        <ProfileOrderHistory />
+                    </ProtectedFromUnauthorizedRoute>
+                } />
+                <Route path="/profile/orders/:id" element={
+                    <ProtectedFromUnauthorizedRoute>
+                        <ProfileOrderHistoryDetails />
+                    </ProtectedFromUnauthorizedRoute>
+                } />
+                <Route path="/ingredients/:id" element={<IngredientDetails />} />
+                <Route path="/feed" element={<OrderHistory />} />
+                <Route path="/feed/:id" element={<OrderHistoryDetails />} />
+                <Route path="/" element={<Home />} />
+                <Route element={<NotFound />} />
             </Routes>
             {background && (
                 <Routes>

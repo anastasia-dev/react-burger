@@ -13,7 +13,7 @@ type OrderFeedState = {
     isFeedConnected : boolean
 }
 
-const orderFeedInitialState : OrderFeedState = {
+export const orderFeedInitialState : OrderFeedState = {
     ordersFeed: undefined,
     isFeedConnected : false,
 }

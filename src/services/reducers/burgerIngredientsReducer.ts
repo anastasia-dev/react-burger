@@ -17,7 +17,7 @@ type IngredientsState = {
     ingredientsFailed : boolean,
 }
 
-const ingredientsInitialState : IngredientsState = {
+export const ingredientsInitialState : IngredientsState = {
     dataContent: [],
     ingredientsLoading: false,
     ingredientsSuccess: false,

@@ -1,142 +1,128 @@
 import { CLEAR_ITEM_COUNT, DECREASE_ITEM_COUNT, INCREASE_ITEM_COUNT, SHOW_INGREDIENTS_ERROR, SHOW_INGREDIENTS_REQUEST, SHOW_INGREDIENTS_SUCCESS } from "../actions/ingredients";
-import { ingredientsReducer } from "./burgerIngredientsReducer";
+import { ingredientsInitialState, ingredientsReducer } from "./burgerIngredientsReducer";
 
 describe("burger ingredients reducer", () => {
     it("should return the burger ingredients reducer inital state", () => {
-        expect(ingredientsReducer(undefined, {})).toEqual({
-            dataContent: [],
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false
-         });
+        expect(ingredientsReducer(undefined, {})).toEqual(ingredientsInitialState);
     })
+
+    const testState = {
+      dataContent: [{}],
+      ingredientsFailed: false,
+      ingredientsLoading: false,
+      ingredientsSuccess: false
+   }
 
     it("should handle SHOW_INGREDIENTS_REQUEST", () => {
         expect(ingredientsReducer({
-            dataContent: [],
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false
+            ...testState,
+            ingredientsLoading: false
          }, {
             type: SHOW_INGREDIENTS_REQUEST
          })).toEqual({
-            dataContent: [],
-            ingredientsFailed: false,
-            ingredientsLoading: true,
-            ingredientsSuccess: false
+            ...testState,
+            ingredientsLoading: true
          });
     })
 
     it("should handle SHOW_INGREDIENTS_ERROR", () => {
-        expect(ingredientsReducer({
-            dataContent: [{}],
-            ingredientsFailed: false,
-            ingredientsLoading: true,
-            ingredientsSuccess: true
-         }, {
+        expect(ingredientsReducer(testState, {
             type: SHOW_INGREDIENTS_ERROR
          })).toEqual({
+            ...testState,
             dataContent: [],
-            ingredientsFailed: true,
-            ingredientsLoading: false,
-            ingredientsSuccess: false
+            ingredientsFailed: true
          });
     })
 
     it("should handle SHOW_INGREDIENTS_SUCCESS", () => {
         const data = [{}, {}]
-        expect(ingredientsReducer({
-            dataContent: [{}],
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false
-         }, {
+        expect(ingredientsReducer(testState, {
             type: SHOW_INGREDIENTS_SUCCESS,
             data: data
          })).toEqual({
+            ...testState,
             dataContent: data,
-            ingredientsFailed: false,
-            ingredientsLoading: false,
             ingredientsSuccess: true
          });
     })
 
+    const ingredientId = "1";
+    const bunId = "2"
+    const ingredientCount0 = {_id: ingredientId, count: 0 };
+    const bunCount0 = {_id: bunId, count: 0, type: "bun" };
+    const ingredientCount1 = { ...ingredientCount0, count: 1 };
+    const bunCount2 = { ...bunCount0, count: 2 };
+
     it("should handle INCREASE_ITEM_COUNT", () => {
-        const data = [{_id: "1", count: 0 }, {_id: "2", count: 0, type: "bun" }]
-        const state = {            
+         const data = [ingredientCount0, bunCount0]
+         const state = { 
+            ...testState,
             dataContent: data,
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false 
-        };
+         };
         expect(ingredientsReducer(state, {
             type: INCREASE_ITEM_COUNT,
-            itemId: "1"
+            itemId: ingredientId
          })).toEqual({
             ...state, 
-            dataContent: [{_id: "1", count: 1 }, {_id: "2", count: 0, type: "bun"}]
+            dataContent: [ingredientCount1, bunCount0]
          });
          expect(ingredientsReducer(state, {
             type: INCREASE_ITEM_COUNT,
-            itemId: "2"
+            itemId: bunId
          })).toEqual({
             ...state,
-            dataContent: [{_id: "1", count: 1 }, {_id: "2", count: 2, type: "bun"}],
+            dataContent: [ingredientCount1, bunCount2],
          });
     })
 
     it("should handle DECREASE_ITEM_COUNT", () => {
-        const data = [{_id: "1", count: 1 }, {_id: "2", count: 2, type: "bun" }]
-        const state = {            
+        const data = [ingredientCount0, bunCount0]
+        const state = {          
+            ...testState,  
             dataContent: data,
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false 
         };
         expect(ingredientsReducer(state, {
             type: DECREASE_ITEM_COUNT,
-            itemId: "1"
+            itemId: ingredientId
          })).toEqual({
             ...state, 
-            dataContent: [{_id: "1", count: 0 }, {_id: "2", count: 2, type: "bun"}]
+            dataContent: [ingredientCount0, bunCount2]
          });
          expect(ingredientsReducer(state, {
             type: DECREASE_ITEM_COUNT,
-            itemId: "1"
+            itemId: ingredientId
          })).toEqual({
             ...state, 
-            dataContent: [{_id: "1", count: 0 }, {_id: "2", count: 2, type: "bun"}]
+            dataContent: [ingredientCount0, bunCount2]
          });
          expect(ingredientsReducer(state, {
             type: DECREASE_ITEM_COUNT,
-            itemId: "2"
+            itemId: bunId
          })).toEqual({
             ...state,
-            dataContent: [{_id: "1", count: 0 }, {_id: "2", count: 0, type: "bun"}],
+            dataContent: [ingredientCount0, bunCount0],
          });
          expect(ingredientsReducer(state, {
             type: DECREASE_ITEM_COUNT,
-            itemId: "2"
+            itemId: bunId
          })).toEqual({
             ...state,
-            dataContent: [{_id: "1", count: 0 }, {_id: "2", count: 0, type: "bun"}],
+            dataContent: [ingredientCount0, bunCount0],
          });
     })
 
     it("should handle CLEAR_ITEM_COUNT", () => {
-        const data = [{_id: "1", count: 1 }, {_id: "2", count: 2, type: "bun" }]
-        const state = {            
+        const data = [ingredientCount1, bunCount2]
+        const state = {        
+            ...testState,    
             dataContent: data,
-            ingredientsFailed: false,
-            ingredientsLoading: false,
-            ingredientsSuccess: false 
         };
         expect(ingredientsReducer(state, {
             type: CLEAR_ITEM_COUNT,
          })).toEqual({
             ...state, 
-            dataContent: [{_id: "1", count: 0 }, {_id: "2", count: 0, type: "bun"}]
+            dataContent: [ingredientCount0, bunCount0]
          });
     })
-
 });
