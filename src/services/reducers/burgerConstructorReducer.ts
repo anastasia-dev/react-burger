@@ -18,7 +18,7 @@ type BurgerConstructorState = {
     bun? : IIngredient
 }
 
-const constructorInitialState : BurgerConstructorState = {
+export const constructorInitialState : BurgerConstructorState = {
     ingredientList: [],
     bun: undefined
 }

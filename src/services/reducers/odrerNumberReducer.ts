@@ -7,7 +7,7 @@ type OrderNumberState = {
     orderNumberFailed : boolean
 }
 
-const orderNumberInitialState : OrderNumberState = {
+export const orderNumberInitialState : OrderNumberState = {
     orderNumber: undefined,
     orderNumberSuccess: false,
     orderNumberLoading: false,
